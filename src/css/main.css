@@ -100,6 +100,18 @@ button:hover {
 #scene-character-select .game-screen {
   background-color: #ffa500;
 }
+#scene-game-play .controller {
+  background-color: #dc143c;
+}
+#scene-game-play .game-screen {
+  background-color: #8b0000;
+}
+#scene-tutorial .controller {
+  background-color: #90ee90;
+}
+#scene-tutorial .game-screen {
+  background-color: #008b8b;
+}
 #scene-welcome .controller {
   display: flex;
   justify-content: center;
@@ -114,4 +126,10 @@ button:hover {
 }
 #scene-welcome .game-screen p {
   margin-top: 3rem;
+}
+#scene-winner .controller {
+  background-color: #f0f;
+}
+#scene-winner .game-screen {
+  background-color: #8b008b;
 }

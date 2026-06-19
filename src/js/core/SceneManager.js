@@ -3,8 +3,9 @@ import * as welcome from '../scenes/welcome.js'
 import * as characterSelect from '../scenes/characterSelect.js'
 import * as tutorial from '../scenes/tutorial.js'
 import * as gamePlay from '../scenes/gamePlay.js'
+import * as winner from '../scenes/winner.js'
 
-const scenes = { welcome, characterSelect, tutorial, gamePlay }
+const scenes = { welcome, characterSelect, tutorial, gamePlay, winner }
 let currentScene = null
 
 const SceneManager = {
@@ -26,6 +27,7 @@ EventBus.on('scene:welcome', () => SceneManager.goToScene('welcome'))
 EventBus.on('scene:characterSelect', () => SceneManager.goToScene('characterSelect'))
 EventBus.on('scene:tutorial', () => SceneManager.goToScene('tutorial'))
 EventBus.on('scene:gamePlay', () => SceneManager.goToScene('gamePlay'))
+EventBus.on('scene:winner', () => SceneManager.goToScene('winner'))
 
 
 export default SceneManager
