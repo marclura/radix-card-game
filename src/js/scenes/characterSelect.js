@@ -51,14 +51,24 @@ export function onEnter() {
     }
 
     handlers.confirmP1 = () => {
-        p1Ready = true
+        p1Ready = true;
+
+        [...document.querySelector('#character-selector-controller-p1').children].forEach(el => {
+            el.style.display = 'none'
+        })
+
         if (p1Ready && p2Ready) {
             // save current player for P1 and P2
             EventBus.emit('scene:tutorial')
         }
     }
     handlers.confirmP2 = () => {
-        p2Ready = true
+        p2Ready = true;
+
+        [...document.querySelector('#character-selector-controller-p2').children].forEach(el => {
+            el.style.display = 'none'
+        })
+
         if (p1Ready && p2Ready) {
             // save current player for P1 and P2
             EventBus.emit('scene:tutorial')
@@ -83,7 +93,15 @@ export function onExit() {
 
     document.querySelector('#btn-select-next-p2').removeEventListener('click', handlers.nextP2)
     document.querySelector('#btn-select-previous-p2').removeEventListener('click', handlers.previousP2)
-    document.querySelector('#btn-select-p2').removeEventListener('click', handlers.confirmP2)
+    document.querySelector('#btn-select-p2').removeEventListener('click', handlers.confirmP2);
+
+    [...document.querySelector('#character-selector-controller-p1').children].forEach(el => {
+        el.style.display = 'block'
+    });
+
+    [...document.querySelector('#character-selector-controller-p2').children].forEach(el => {
+        el.style.display = 'block'
+    });
 }
 
 function updateP1() {
