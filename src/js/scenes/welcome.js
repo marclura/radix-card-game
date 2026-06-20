@@ -1,4 +1,5 @@
 import EventBus from '../core/EventBus.js'
+import { resetStore } from '../core/Store.js'
 
 let p1Ready = false
 let p2Ready = false
@@ -11,6 +12,8 @@ const handlers = {  // list of event listeners
 export const el = document.querySelector('#scene-welcome')
 
 export function onEnter() {
+    resetStore()
+    
     p1Ready = false
     p2Ready = false
 

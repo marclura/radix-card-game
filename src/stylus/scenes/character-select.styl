@@ -1,5 +1,36 @@
 #scene-character-select
     .controller
+        padding: 1rem
         background-color: pink
+        display: flex
+        flex-wrap: wrap
+        align-items: center
+        align-content: center
+
+        .btn-select-next, .btn-select-previous
+            box-sizing: border-box
+            height: auto
+            width: 50%
+        .btn-select-select
+            width: 100%
+
     .game-screen
         background-color: orange
+        display: flex
+        text-align: center
+        padding: 1rem
+
+        #selection-p1, #selection-p2
+            width calc((100% - 25%) / 2)
+
+        #selection-characters-cards
+            width 25%
+
+        #list-characters
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex
+            flex-wrap: wrap
+            align-items: center
+            align-content: center

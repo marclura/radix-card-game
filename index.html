@@ -30,13 +30,35 @@
 
     <div id="scene-character-select" class="scene">
         <div class="controller controller-p1">
-            <button id="btn-select-p1">Select</button>
+            <button id="btn-select-previous-p1" class="btn-select-previous"><</button>
+            <button id="btn-select-next-p1" class="btn-select-next">></button>
+            <button id="btn-select-p1" class="btn-select-select">Select</button>
         </div>
         <div class="game-screen">
-            <h1>Character Select</h1>
+
+            <!-- P1 selection -->
+            <div id="selection-p1">
+                <h2>Player 1</h2>
+                <ul id="display-selection-p1"></ul>
+            </div>
+            
+            <!-- thumbnails list -->
+            <div id="selection-characters-thumbnail">
+                <h1>Select</h1>
+                <ul id="list-characters">
+                </ul>
+            </div>
+
+            <!-- P2 selection -->
+            <div id="selection-p2">
+                <h2>Player 2</h2>
+                <ul id="display-selection-p2"></ul>
+            </div>
         </div>
         <div class="controller controller-p2">
-            <button id="btn-select-p2">Select</button>
+            <button id="btn-select-previous-p2" class="btn-select-previous"><</button>
+            <button id="btn-select-next-p2" class="btn-select-next">></button>
+            <button id="btn-select-p2" class="btn-select-select">Select</button>
         </div>
     </div>
 
