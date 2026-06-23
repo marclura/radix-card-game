@@ -26,11 +26,11 @@ export function onEnter() {
         if (p1Ready && p2Ready) EventBus.emit('scene:characterSelect')
     }
 
-    document.querySelector('#btn-start-p1').addEventListener('click', handlers.clickP1)
-    document.querySelector('#btn-start-p2').addEventListener('click', handlers.clickP2)
+    document.querySelector('#scene-welcome .btn-select-p1').addEventListener('click', handlers.clickP1)
+    document.querySelector('#scene-welcome .btn-select-p2').addEventListener('click', handlers.clickP2)
 }
 
 export function onExit() {
-    document.querySelector('#btn-start-p1').removeEventListener('click', handlers.clickP1)
-    document.querySelector('#btn-start-p2').removeEventListener('click', handlers.clickP2)
+    document.querySelector('#scene-welcome .btn-select-p1').removeEventListener('click', handlers.clickP1)
+    document.querySelector('#scene-welcome .btn-select-p2').removeEventListener('click', handlers.clickP2)
 }

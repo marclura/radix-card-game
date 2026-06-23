@@ -12,101 +12,157 @@
     <!-- welcome -->
 
     <div id="scene-welcome" class="scene"">
-        <div class="controller controller-p1">
-            <button id="btn-start-p1">Start</button>
-        </div>
-
+        
         <div class="game-screen">
-            <h1>Welcome to the Card Game</h1>
-            <p>Click "Start" when redy to play!</p>
+            <header>
+                <p class="h1">Benvenuto al gioco delle carte</p>
+            </header>
+            <section>
+                <p>Premi "Start" per iniziare</p>
+            </section>
         </div>
 
-        <div class="controller controller-p2">
-            <button id="btn-start-p2">Start</button>
+        <div class="controller-container">
+            <div class="controller controller-p1">
+                <button class="btn-select btn-select-p1">Start</button>
+            </div>
+
+            <div class="controller controller-p2">
+                <button class="btn-select btn-select-p2">Start</button>
+            </div>
         </div>
     </div>
 
     <!-- character select -->
 
     <div id="scene-character-select" class="scene">
-        <div class="controller controller-p1" id="character-selector-controller-p1">
-            <button id="btn-select-previous-p1" class="btn-select-previous"><</button>
-            <button id="btn-select-next-p1" class="btn-select-next">></button>
-            <button id="btn-select-p1" class="btn-select-select">Select</button>
-        </div>
+    
         <div class="game-screen">
 
-            <!-- P1 selection -->
-            <div id="selection-p1">
-                <h2>Player 1</h2>
-                <ul id="display-selection-p1"></ul>
+            <header>
+                <p class="h2">Seleziona la tua squadra</p>
+            </header>
+
+            <section>
+                <!-- P1 selection -->
+                <div id="selection-p1">
+                    <ul id="display-selection-p1"></ul>
+                </div>
+
+                <!-- thumbnails list -->
+                <div id="selection-thumb-container">
+                    <ul id="list-thumbnails"></ul>
+                </div>            
+
+                <!-- P2 selection -->
+                <div id="selection-p2">
+                    <ul id="display-selection-p2"></ul>
+                </div>
             </div>
-            
-            <!-- thumbnails list -->
-            <div id="selection-characters-thumbnail">
-                <h1>Select</h1>
-                <ul id="list-characters">
-                </ul>
+        </section>
+
+        <div class="controller-container">
+            <div class="controller controller-p1" id="character-selector-controller-p1">
+                <button class="btn-AB btn-A-p1"><</button>
+                <button class="btn-AB btn-B-p1">></button>
+                <button class="btn-select btn-select-p1">Conferma</button>
             </div>
 
-            <!-- P2 selection -->
-            <div id="selection-p2">
-                <h2>Player 2</h2>
-                <ul id="display-selection-p2"></ul>
+            <div class="controller controller-p2" id="character-selector-controller-p2">
+                <button class="btn-AB btn-A-p2"><</button>
+                <button class="btn-AB btn-B-p2">></button>
+                <button class="btn-select btn-select-p2">Conferma</button>
             </div>
         </div>
-        <div class="controller controller-p2" id="character-selector-controller-p2">
-            <button id="btn-select-previous-p2" class="btn-select-previous"><</button>
-            <button id="btn-select-next-p2" class="btn-select-next">></button>
-            <button id="btn-select-p2" class="btn-select-select">Select</button>
-        </div>
+
     </div>
 
-    <!-- tutorial -->
+    <!-- bet -->
 
-    <div id="scene-tutorial" class="scene"">
-        <div class="controller controller-p1">
-            <button id="btn-play-p1">Play</button>
-        </div>
+    <div id="scene-bet" class="scene"">
 
         <div class="game-screen">
-            <h1>Tutorial</h1>
+            <header>
+                <p class="h2">Fai la tua puntata</p>
+            </header>
+            <section>
+                <p>Il vincitore raddoppiera le fishes che ha puntato, mentre il perdente perde tutto!</p>
+            </section>
         </div>
 
-        <div class="controller controller-p2">
-            <button id="btn-play-p2">Play</button>
+        <div class="controller-container">
+            <div class="controller controller-p1">
+                <button class="btn-AB btn-A-p1">-</button>
+                <button class="btn-AB btn-B-p1">+</button>
+                <button class="btn-select btn-select-p1">Confirm</button>
+            </div>
+
+            <div class="controller controller-p2">
+                <button class="btn-AB btn-A-p2">-</button>
+                <button class="btn-AB btn-B-p2">+</button>
+                <button class="btn-select btn-select-p2">Confirm</button>
+            </div>
         </div>
     </div>
 
     <!-- game play -->
 
     <div id="scene-game-play" class="scene"">
-        <div class="controller controller-p1">
-            <button id="btn-choose-p1">Choose</button>
-        </div>
 
+        <!-- game screen -->
         <div class="game-screen">
-            <h1>Game Play</h1>
+            <div id="game-timer-container">
+                <header>
+                    <div id="game-timer-bar"></div>
+                </header>
+                <section>
+
+                    ...
+
+                </section>
+            </div>
         </div>
 
-        <div class="controller controller-p2">
-            <button id="btn-choose-p2">Choose</button>
+        <div class="controller-container"> 
+            <!-- card deck p1 -->
+            <div class="controller controller-p1">
+                <div id="card-decks-p1" class="card-decks-container">
+                    <button id="card-deck-1-p1" class="btn-deck"></button>
+                    <button id="card-deck-2-p1" class="btn-deck"></button>
+                    <button id="card-deck-3-p1" class="btn-deck"></button>
+                </div>
+            </div>
+
+            <!-- card deck p1 -->
+            <div class="controller controller-p2">
+                <div id="card-decks-p2" class="card-decks-container">
+                    <button id="card-deck-1-p2" class="btn-deck"></button>
+                    <button id="card-deck-2-p2" class="btn-deck"></button>
+                    <button id="card-deck-3-p2" class="btn-deck"></button>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- winner -->
 
     <div id="scene-winner" class="scene"">
-        <div class="controller controller-p1">
-            <button id="btn-restart-p1">Restart</button>
-        </div>
 
         <div class="game-screen">
-            <h1>The Winner</h1>
+            <header>
+                <p class="h1">Winner</p>
+            </header>
+            <section></section>
         </div>
 
-        <div class="controller controller-p2">
-            <button id="btn-restart-p2">Restart</button>
+        <div class="controller-container">
+            <div class="controller controller-p1">
+                <button class="btn-select btn-select-p1">Restart</button>
+            </div>
+
+            <div class="controller controller-p2">
+                <button class="btn-select btn-select-p2">Restart</button>
+            </div>
         </div>
     </div>
     

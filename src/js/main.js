@@ -5,4 +5,4 @@ import SceneManager from './core/SceneManager.js'
 
 populateCharacters(Characters)
 
-SceneManager.goToScene('characterSelect')
+SceneManager.goToScene('welcome')

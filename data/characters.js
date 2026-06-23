@@ -1,37 +1,62 @@
 export const CHARACTERS = [
     {
-        name: "Character 1",
+        name: "LA CAVALLERIA DELLA VITTORIA",
         color: "red",
-        luck: 0.1,
-        discipline: 0.5,
-        skills: 0.6
+        skills: {
+            fortuna: 0.1,
+            forza: 0.5,
+            difesa: 0.6,
+            strategia: 0.9
+        }
     },
     {
-        name: "Character 2",
+        name: "IL CLAN DELLA FORTUNA",
         color: "blue",
-        luck: 0.9,
-        discipline: 0.1,
-        skills: 0.2
+        skills: {
+            fortuna: 0.9,
+            forza: 0.1,
+            difesa: 0.2,
+            strategia: 0.3
+        }
     },
     {
-        name: "Character 3",
+        name: "L'ORDINE DELLA DEA BENDATA",
         color: "green",
-        luck: 0.8,
-        discipline: 0.2,
-        skills: 0.2
+        skills: {
+            fortuna: 0.8,
+            forza: 0.2,
+            difesa: 0.2,
+            strategia: 0.2
+        }
     },
     {
-        name: "Character 4",
+        name: "LA COMPAGNIA DELLA BUONA SORTE",
         color: "yellow",
-        luck: 0.2,
-        discipline: 0.1,
-        skills: 0.9
+        skills: {
+            fortuna: 0.2,
+            forza: 0.1,
+            difesa: 0.9,
+            strategia: 1
+        }
     },
     {
-        name: "Character 5",
+        name: "L'ALLEANZA DEL SUCCESSO",
         color: "pink",
-        luck: 0.3,
-        discipline: 0.5,
-        skills: 0.5
+        skills: {
+            fortuna: 0.3,
+            forza: 0.5,
+            difesa: 0.5,
+            strategia: 0.6
+        }
+    },
+    {
+        name: "L'UNIONE DEL TRIONFO",
+        color: "orange",
+        skills: {
+            fortuna: 0.3,
+            forza: 0.5,
+            difesa: 0.5,
+            strategia: 0.4
+        }
     }
 ]

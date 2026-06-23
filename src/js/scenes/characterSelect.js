@@ -15,7 +15,7 @@ const handlers = {  // list of event listeners
 
 const displaySelectionP1 = document.querySelector('#display-selection-p1')
 const displaySelectionP2 = document.querySelector('#display-selection-p2')
-const listCharacters = document.querySelector('#list-characters')
+const listCharacters = document.querySelector('#list-thumbnails')
 
 export const el = document.querySelector('#scene-character-select')
 
@@ -59,7 +59,7 @@ export function onEnter() {
 
         if (p1Ready && p2Ready) {
             // save current player for P1 and P2
-            EventBus.emit('scene:tutorial')
+            EventBus.emit('scene:bet')
         }
     }
     handlers.confirmP2 = () => {
@@ -71,29 +71,31 @@ export function onEnter() {
 
         if (p1Ready && p2Ready) {
             // save current player for P1 and P2
-            EventBus.emit('scene:tutorial')
+            EventBus.emit('scene:bet')
         } 
     }
 
     // p1
-    document.querySelector('#btn-select-next-p1').addEventListener('click', handlers.nextP1)
-    document.querySelector('#btn-select-previous-p1').addEventListener('click', handlers.previousP1)
-    document.querySelector('#btn-select-p1').addEventListener('click', handlers.confirmP1)
+    document.querySelector('#scene-character-select .btn-A-p1').addEventListener('click', handlers.previousP1)
+    document.querySelector('#scene-character-select .btn-B-p1').addEventListener('click', handlers.nextP1)
+    document.querySelector('#scene-character-select .btn-select-p1').addEventListener('click', handlers.confirmP1)
 
     //p2
-    document.querySelector('#btn-select-next-p2').addEventListener('click', handlers.nextP2)
-    document.querySelector('#btn-select-previous-p2').addEventListener('click', handlers.previousP2)
-    document.querySelector('#btn-select-p2').addEventListener('click', handlers.confirmP2)
+    document.querySelector('#scene-character-select .btn-A-p2').addEventListener('click', handlers.previousP2)
+    document.querySelector('#scene-character-select .btn-B-p2').addEventListener('click', handlers.nextP2)
+    document.querySelector('#scene-character-select .btn-select-p2').addEventListener('click', handlers.confirmP2)
 }
 
 export function onExit() {
-    document.querySelector('#btn-select-next-p1').removeEventListener('click', handlers.nextP1)
-    document.querySelector('#btn-select-previous-p1').removeEventListener('click', handlers.previousP1)
-    document.querySelector('#btn-select-p1').removeEventListener('click', handlers.confirmP1)
+    // p1
+    document.querySelector('#scene-character-select .btn-A-p1').removeEventListener('click', handlers.previousP1)
+    document.querySelector('#scene-character-select .btn-B-p1').removeEventListener('click', handlers.nextP1)
+    document.querySelector('#scene-character-select .btn-select-p1').removeEventListener('click', handlers.confirmP1)
 
-    document.querySelector('#btn-select-next-p2').removeEventListener('click', handlers.nextP2)
-    document.querySelector('#btn-select-previous-p2').removeEventListener('click', handlers.previousP2)
-    document.querySelector('#btn-select-p2').removeEventListener('click', handlers.confirmP2);
+    //p2
+    document.querySelector('#scene-character-select .btn-A-p2').removeEventListener('click', handlers.previousP2)
+    document.querySelector('#scene-character-select .btn-B-p2').removeEventListener('click', handlers.nextP2)
+    document.querySelector('#scene-character-select .btn-select-p2').removeEventListener('click', handlers.confirmP2);
 
     [...document.querySelector('#character-selector-controller-p1').children].forEach(el => {
         el.style.display = 'block'

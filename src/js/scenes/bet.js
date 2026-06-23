@@ -8,7 +8,7 @@ const handlers = {  // list of event listeners
     confirmP2: null
 }
 
-export const el = document.querySelector('#scene-tutorial')
+export const el = document.querySelector('#scene-bet')
 
 export function onEnter() {
     p1Ready = false
