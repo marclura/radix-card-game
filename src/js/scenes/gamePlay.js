@@ -85,6 +85,8 @@ function startTimer(callback) {
 
 
 export function onExit() {
+    gameTimeBar.style.width = '100%'
+    
     document.querySelector('#card-deck-1-p1').removeEventListener('click', handlers.drawCardP1)
     document.querySelector('#card-deck-2-p1').removeEventListener('click', handlers.drawCardP1)
     document.querySelector('#card-deck-3-p1').removeEventListener('click', handlers.drawCardP1)
