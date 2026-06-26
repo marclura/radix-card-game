@@ -1,6 +1,10 @@
 # radix-card-game
 2026
 
+## Game play
+
+Bet 2-12, Points 0-100
+
 ## Dev
 
 https://marclura.github.io/radix-card-game/

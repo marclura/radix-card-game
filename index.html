@@ -117,12 +117,27 @@
         <div class="game-screen">
             <div id="game-timer-container">
                 <header>
-                    <div id="game-timer-bar"></div>
+                    <div id="game-timer-bar-container">
+                        <div id="game-time-bar"></div>
+                    </div>
                 </header>
                 <section>
-
-                    ...
-
+                    <div id="game-play-contianer">
+                        <div id="score-board-p1" class="score-board">
+                            <div id="points-p1" class="points"></div>
+                            <div id="character-p1"></div>
+                        </div>
+                        <div id="card-withdraw-container">
+                            <div id="card-message"></div>
+                            <div id="card-reveal">
+                                <div id="card-points"></div>
+                            </div>
+                        </div>
+                        <div id="score-board-p2" class="score-board">
+                            <div id="points-p2" class="points"></div>
+                            <div id="character-p2"></div>
+                        </div>
+                    </div>
                 </section>
             </div>
         </div>
@@ -156,7 +171,9 @@
             <header>
                 <p class="h1">Winner</p>
             </header>
-            <section></section>
+            <section>
+                <div id="winner-message"></div>
+            </section>
         </div>
 
         <div class="controller-container">
