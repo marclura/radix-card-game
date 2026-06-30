@@ -1,62 +1,68 @@
 export const CARDS = [
     {
-        points: {
-            scores: 10,
+        score: 10,
+        skills: {
             luck: 0.2,
+            strength: 0.5,
             discipline: 0,
-            skills: 0
+            strategy: 0
         },
         message: "Hai avuto fortuna",
         type: "positive"
     },
     {
-        points: {
-            scores: 20,
+        score: 20,
+        skills: {
             luck: 0,
+            strength: 0.5,
             discipline: 0.1,
-            skills: 0.3
+            strategy: 0.3
         },
-        message: "Le tue skills hanno meritato",
+        message: "Le tue strategy hanno meritato",
         type: "positive"
     },
     {
-        points: {
-            scores: -5,
+        score: -5,
+        skills: {
             luck: 0,
+            strength: 0.5,
             discipline: 0,
-            skills: -0.2
+            strategy: -0.2
         },
-        message: "Le tue skills non sono buone",
+        message: "Le tue strategy non sono buone",
         type: "negative"
     },    
     {
-        points: {
-            scores: -15,
+        score: -15,
+        skills: {
             luck: 0,
+            strength: 0.5,
             discipline: -0.2,
-            skills: 0
+            strategy: 0
         },
         message: "Ti devi applicare meglio",
         type: "negative"
     },
     {
-        points: {
-            scores: 0,
+        score: 0,
+        skills: {
             luck: 0,
+            strength: 0.5,
             discipline: 0.2,
-            skills: 0
+            strategy: 0
         },
-        message: "Le tue skills non sono buone",
+        message: "Le tue strategy non sono buone",
         type: "special",
     },
     {
-        points: {
-            scores: 0,
+        score: 0,
+        skills: {
             luck: 0,
+            strength: 0.5,
             discipline: 0.2,
-            skills: 0
+            strategy: 0
         },
-        message: "Le tue skills non sono buone",
+        message: "Le tue strategy non sono buone",
         type: "special",
     }
 ]

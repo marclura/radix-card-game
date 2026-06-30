@@ -3,6 +3,8 @@ import Store from '../core/Store.js'
 import * as Cards from './../../../data/cards.js'
 import * as Settings from './../../../data/settings.js'
 
+let currentTurn = 0 // player 0 or 1
+
 const handlers = {  // list of event listeners
     
 }
@@ -17,17 +19,26 @@ const gameTimeBar = document.querySelector('#scene-game-play #game-time-bar')
 
 export function onEnter() {
 
-    pointsP1.textContent = Store.players[0].points
-    pointsP2.textContent = Store.players[1].points
+    pointsP1.textContent = Store.players[0].score
+    pointsP2.textContent = Store.players[1].score
+
+    currentTurn = Math.round(Math.random())
+    updateGUI()
 
     handlers.drawCardP1 = () => {
-        drawCard(Store.players[0])
-        pointsP1.textContent = Store.players[0].points
+        if(currentTurn === 0) {
+            drawCard(Store.players[0])
+            pointsP1.textContent = Store.players[0].score
+            changeTurn()
+        }
     }
 
     handlers.drawCardP2 = () => {
-        drawCard(Store.players[1])
-        pointsP2.textContent = Store.players[1].points
+        if(currentTurn === 1) {
+            drawCard(Store.players[1])
+            pointsP2.textContent = Store.players[1].score
+            changeTurn()
+        }
     }
 
     handlers.gameIsOver = () => {
@@ -54,13 +65,39 @@ function drawCard(player) {
     cardMessage.textContent = card.message
 
     // card points
-    cardPoints.textContent = (card.points.scores > 0) ? `+${card.points.scores}` : card.points.scores
+    cardPoints.textContent = (card.score > 0) ? `+${card.score}` : card.score
 
-    // points
-    player.points += card.points.scores
-    if(player.points < Settings.SETTINGS.gameMinPoints) player.points = 0
-    if(player.points > Settings.SETTINGS.gameMaxPoints) player.points = 0
+    // score
+    player.score += card.score
+    if(player.score < Settings.SETTINGS.gameMinPoints) player.score = 0
+    if(player.score > Settings.SETTINGS.gameMaxPoints) player.score = 0
 
+    // skills update
+    player.skills = Object.fromEntries(
+        Object.entries(player.skills).map(([skill, value]) => {
+            let _value = value + card.skills[skill]
+
+            if(_value > 1.0) _value = 1.0
+            if(_value < 0.0) _value = 0
+            return [skill, _value]})
+    );
+
+}
+
+function changeTurn() {
+    currentTurn = 1 - currentTurn   // toggle 1 to 0 and viceversa
+    updateGUI()
+}
+
+function updateGUI() {
+    if(currentTurn === 1) {
+        document.querySelector("#scene-game-play .controller-p1").classList.add('not-current-turn')
+        document.querySelector("#scene-game-play .controller-p2").classList.remove('not-current-turn')
+    }
+    else {
+        document.querySelector("#scene-game-play .controller-p1").classList.remove('not-current-turn')
+        document.querySelector("#scene-game-play .controller-p2").classList.add('not-current-turn')
+    } 
 }
 
 function startTimer(callback) {

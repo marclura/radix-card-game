@@ -1,5 +1,6 @@
 import EventBus from '../core/EventBus.js'
 import Store from '../core/Store.js'
+import * as Characters from '../../../data/characters.js'
 
 let p1Ready = false
 let p2Ready = false
@@ -33,7 +34,7 @@ export function onEnter() {
     }
 
     handlers.previousP1 = () => {
-        if (Store.players[0].character > 0) Store.players[0].character --
+        if (Store.players[0].character > 0) Store.players[0].character--
         else Store.players[0].character = Store.charactersCount - 1
         updateP1()
     }
@@ -45,13 +46,15 @@ export function onEnter() {
     }
 
     handlers.previousP2 = () => {
-        if (Store.players[1].character > 0) Store.players[1].character --
+        if (Store.players[1].character > 0) Store.players[1].character--
         else Store.players[1].character = Store.charactersCount - 1
         updateP2()
     }
 
     handlers.confirmP1 = () => {
         p1Ready = true;
+
+        Store.players[0].skills = Characters.CHARACTERS[Store.players[0].character].skills;
 
         [...document.querySelector('#character-selector-controller-p1').children].forEach(el => {
             el.style.display = 'none'
@@ -64,6 +67,8 @@ export function onEnter() {
     }
     handlers.confirmP2 = () => {
         p2Ready = true;
+
+        Store.players[1].skills = Characters.CHARACTERS[Store.players[1].character].skills;
 
         [...document.querySelector('#character-selector-controller-p2').children].forEach(el => {
             el.style.display = 'none'

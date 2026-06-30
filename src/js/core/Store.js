@@ -4,12 +4,24 @@ const Store = {
     players: [
         {
             character: 0,
-            points: 0,
+            score: 0,
+            skills: {
+                luck: 0,
+                strength: 0,
+                discipline: 0,
+                strategy: 0
+            },
             bet: 0
         },
         {
             character: 0,
-            points: 0,
+            score: 0,
+            skills: {
+                luck: 0,
+                strength: 0,
+                discipline: 0,
+                strategy: 0
+            },
             bet: 0
         }
     ]
