@@ -7,4 +7,4 @@ populateCharacters(Characters)
 
 // welcome, characterSelect, bet, gamePlay, winner
 
-SceneManager.goToScene('characterSelect')
+SceneManager.goToScene('welcome')
