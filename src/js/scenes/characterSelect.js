@@ -28,27 +28,35 @@ export function onEnter() {
     updateP2()
 
     handlers.nextP1 = () => {
-        if (Store.players[0].character < Store.charactersCount - 1) Store.players[0].character++
-        else Store.players[0].character = 0
-        updateP1()
+        if(!p1Ready) {
+            if (Store.players[0].character < Store.charactersCount - 1) Store.players[0].character++
+            else Store.players[0].character = 0
+            updateP1()
+        }
     }
 
     handlers.previousP1 = () => {
-        if (Store.players[0].character > 0) Store.players[0].character--
-        else Store.players[0].character = Store.charactersCount - 1
-        updateP1()
+        if(!p1Ready) {
+            if (Store.players[0].character > 0) Store.players[0].character--
+            else Store.players[0].character = Store.charactersCount - 1
+            updateP1()
+        }
     }
 
     handlers.nextP2 = () => {
-        if (Store.players[1].character < Store.charactersCount - 1) Store.players[1].character++
-        else Store.players[1].character = 0
-        updateP2()
+        if(!p2Ready) {
+            if (Store.players[1].character < Store.charactersCount - 1) Store.players[1].character++
+            else Store.players[1].character = 0
+            updateP2()
+        }
     }
 
     handlers.previousP2 = () => {
-        if (Store.players[1].character > 0) Store.players[1].character--
-        else Store.players[1].character = Store.charactersCount - 1
-        updateP2()
+        if(!p2Ready) {
+            if (Store.players[1].character > 0) Store.players[1].character--
+            else Store.players[1].character = Store.charactersCount - 1
+            updateP2()
+        }
     }
 
     handlers.confirmP1 = () => {
@@ -57,7 +65,7 @@ export function onEnter() {
         Store.players[0].skills = Characters.CHARACTERS[Store.players[0].character].skills;
 
         [...document.querySelector('#character-selector-controller-p1').children].forEach(el => {
-            el.style.display = 'none'
+            el.classList.add('disabled')
         })
 
         if (p1Ready && p2Ready) {
@@ -71,7 +79,7 @@ export function onEnter() {
         Store.players[1].skills = Characters.CHARACTERS[Store.players[1].character].skills;
 
         [...document.querySelector('#character-selector-controller-p2').children].forEach(el => {
-            el.style.display = 'none'
+            el.classList.add('disabled')
         })
 
         if (p1Ready && p2Ready) {
@@ -103,11 +111,11 @@ export function onExit() {
     document.querySelector('#scene-character-select .btn-select-p2').removeEventListener('click', handlers.confirmP2);
 
     [...document.querySelector('#character-selector-controller-p1').children].forEach(el => {
-        el.style.display = 'block'
+        el.classList.remove('disabled')
     });
 
     [...document.querySelector('#character-selector-controller-p2').children].forEach(el => {
-        el.style.display = 'block'
+        el.classList.remove('disabled')
     });
 }
 

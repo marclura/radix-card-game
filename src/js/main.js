@@ -5,4 +5,6 @@ import SceneManager from './core/SceneManager.js'
 
 populateCharacters(Characters)
 
-SceneManager.goToScene('welcome')
+// welcome, characterSelect, bet, gamePlay, winner
+
+SceneManager.goToScene('characterSelect')

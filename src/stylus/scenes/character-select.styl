@@ -7,6 +7,7 @@
 
         section
             display: flex
+            justify-content: space-between
 
         #selection-thumb-container
             .character-thumbnail
@@ -41,32 +42,8 @@
                 background-color: black
                 border-radius: 50%
 
-        .character-card
-            display: none
-
-            h3
-                width: 100%
-
-            &.active
-                display: flex
-                flex-wrap: wrap
-
-            .character-bar
-                width: 100%
-                height: 10px
-                background-color: yellow
-
-                & + .character-bar
-                    margin-top: 0.3rem
-
         #selection-p1, #selection-p2
-            width 40%
-
-        #selection-p1
-            text-align: left
-
-        #selection-p2
-            text-align: right
+            width 30%
 
         #display-selection-p1, #display-selection-p2
             list-style: none;

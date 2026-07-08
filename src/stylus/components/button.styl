@@ -1,15 +1,35 @@
 button
-    padding: 0.5rem
-    border: solid, 0.1rem, black
+    border: border-size solid $primary
     text-align: center
-    border-radius: 0.75rem
-    @extends .bold
-
-.btn-select
-    width: 100%
     box-sizing: border-box
-    aspect-ratio: 4 / 1
+    aspect-ratio: 1 / 1
+    border-radius: 50%
+    width: 33%
+    padding: 1rem
 
-.btn-AB
-    width: 45%
-    box-sizing: border-box
+.button.disabled
+    background-color: $disabled
+    color: $background
+    border-color: $disabled-dark
+
+.btn-icon
+    fill: none
+    stroke: $primary
+    stroke-width: 1.2rem
+    aspect-ratio: 1 / 1
+
+.btn-arrow-up
+    transform: rotate(180deg)
+
+button:active
+    background-color: $primary
+    color: $background
+    .btn-icon
+        stroke: $background
+
+button.disabled
+    border-color: $disabled-bg
+    background-color: $disabled-bg
+    color: $disabled-content
+    .btn-icon
+        stroke: $disabled-content

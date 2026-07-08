@@ -35,32 +35,40 @@ export function onEnter() {
 
     // bet up
     handlers.betUpP1 = () => {
-        if(Store.players[0].bet < Settings.SETTINGS.gameMaxBet) {
-            Store.players[0].bet += 1
+        if(!p1Ready) {
+            if(Store.players[0].bet < Settings.SETTINGS.gameMaxBet) {
+                Store.players[0].bet += 1
+            }
+            betP1.textContent = `${Store.players[0].bet} → ${Store.players[0].bet * 2}`
         }
-        betP1.textContent = `${Store.players[0].bet} → ${Store.players[0].bet * 2}`
     }
 
     handlers.betUpP2 = () => {
-        if(Store.players[1].bet < Settings.SETTINGS.gameMaxBet) {
-            Store.players[1].bet += 1
+        if(!p2Ready) {
+            if(Store.players[1].bet < Settings.SETTINGS.gameMaxBet) {
+                Store.players[1].bet += 1
+            }
+            betP2.textContent = `${Store.players[1].bet} → ${Store.players[1].bet * 2}`
         }
-        betP2.textContent = `${Store.players[1].bet} → ${Store.players[1].bet * 2}`
     }
 
     // bet down
     handlers.betDownP1 = () => {
-        if(Store.players[0].bet > Settings.SETTINGS.gameMinBet) {
-            Store.players[0].bet -= 1
+        if(!p1Ready) {
+            if(Store.players[0].bet > Settings.SETTINGS.gameMinBet) {
+                Store.players[0].bet -= 1
+            }
+            betP1.textContent = `${Store.players[0].bet} → ${Store.players[0].bet * 2}`
         }
-        betP1.textContent = `${Store.players[0].bet} → ${Store.players[0].bet * 2}`
     }
 
     handlers.betDownP2 = () => {
-        if(Store.players[1].bet > Settings.SETTINGS.gameMinBet) {
-            Store.players[1].bet -= 1
+        if(!p2Ready) {
+            if(Store.players[1].bet > Settings.SETTINGS.gameMinBet) {
+                Store.players[1].bet -= 1
+            }
+            betP2.textContent = `${Store.players[1].bet} → ${Store.players[1].bet * 2}`
         }
-        betP2.textContent = `${Store.players[1].bet} → ${Store.players[1].bet * 2}`
     }
 
     // confirm
@@ -69,7 +77,7 @@ export function onEnter() {
         if (p1Ready && p2Ready) EventBus.emit('scene:gamePlay');
 
         [...document.querySelector('#scene-bet .controller-p1').children].forEach(el => {
-            el.style.display = 'none'
+            el.classList.add('disabled')
         })
     }
     handlers.confirmP2 = () => {
@@ -77,7 +85,7 @@ export function onEnter() {
         if (p1Ready && p2Ready) EventBus.emit('scene:gamePlay');
 
         [...document.querySelector('#scene-bet .controller-p2').children].forEach(el => {
-            el.style.display = 'none'
+            el.classList.add('disabled')
         })
     }
 
@@ -98,11 +106,11 @@ export function onEnter() {
 export function onExit() {
 
     [...document.querySelector('#scene-bet .controller-p1').children].forEach(el => {
-        el.style.display = 'block'
+        el.classList.remove('disabled')
     });
 
     [...document.querySelector('#scene-bet .controller-p2').children].forEach(el => {
-        el.style.display = 'block'
+        el.classList.remove('disabled')
     });
 
     // bet up

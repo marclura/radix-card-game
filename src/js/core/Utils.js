@@ -31,33 +31,33 @@ export function populateCharacters(Characters) {
 
         Object.entries(el.skills).forEach(([skill, value]) => {
             const skillLi = document.createElement('li')
-            const skillName = document.createElement('h4')
-            const skillBarContainer = document.createElement('div')
+            //const skillBarContainer = document.createElement('div')
             const skillBar = document.createElement('div')
+            const skillName = document.createElement('h4')
 
 
             // li
             skillLi.classList.add('skill-entry')
 
-            // name
-            skillName.textContent = skill
-            skillName.classList.add('skill-name')
-
             // bar container
-            skillBarContainer.classList.add('skill-bar-container')
+            //skillBarContainer.classList.add('skill-bar-container')
             //skillBarContainer.dataset.value = `${value * 100}`
 
             // bar
             skillBar.classList.add('skill-bar')
-            skillBar.textContent = `${value * 100}/100`
+            //skillBar.textContent = `${value * 100}/100`
             skillBar.style.width = `${value * 100}%`
 
             // append bar to barContainer
-            skillBarContainer.append(skillBar)
+            //skillBarContainer.append(skillBar)
+
+            // name
+            skillName.textContent = skill
+            skillName.classList.add('skill-name')
 
             // append to li
+            skillLi.append(skillBar)
             skillLi.append(skillName)
-            skillLi.append(skillBarContainer)
 
             // append to ul
             skillList.append(skillLi)

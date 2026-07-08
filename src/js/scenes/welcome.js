@@ -11,6 +11,9 @@ const handlers = {  // list of event listeners
 
 export const el = document.querySelector('#scene-welcome')
 
+const btnStartP1 = document.querySelector('#scene-welcome .btn-select-p1')
+const btnStartP2 = document.querySelector('#scene-welcome .btn-select-p2')
+
 export function onEnter() {
     resetStore()
     
@@ -19,10 +22,12 @@ export function onEnter() {
 
     handlers.clickP1 = () => {
         p1Ready = true
+        btnStartP1.classList.add('disabled')
         if (p1Ready && p2Ready) EventBus.emit('scene:characterSelect')
     }
     handlers.clickP2 = () => {
         p2Ready = true
+        btnStartP2.classList.add('disabled')
         if (p1Ready && p2Ready) EventBus.emit('scene:characterSelect')
     }
 
@@ -33,4 +38,6 @@ export function onEnter() {
 export function onExit() {
     document.querySelector('#scene-welcome .btn-select-p1').removeEventListener('click', handlers.clickP1)
     document.querySelector('#scene-welcome .btn-select-p2').removeEventListener('click', handlers.clickP2)
+    btnStartP1.classList.remove('disabled')
+    btnStartP2.classList.remove('disabled')
 }

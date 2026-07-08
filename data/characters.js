@@ -1,62 +1,74 @@
 export const CHARACTERS = [
     {
-        name: "LA CAVALLERIA DELLA VITTORIA",
-        color: "red",
+        name: "La cavalleria della vittoria",
+        color: "red",      // #ff0000
         skills: {
-            luck: 0.1,
-            strength: 0.5,
+            strength: 0.1,
+            speed: 0.5,
             discipline: 0.6,
-            strategy: 0.9
+            strategy: 0.5,
+            defense: 0.9,
+            luck: 0.7
         }
     },
     {
-        name: "IL CLAN DELLA luck",
-        color: "blue",
+        name: "La compagnia della buona sorte",
+        color: "blue",   // #0033cc
         skills: {
-            luck: 0.9,
-            strength: 0.1,
+            strength: 0.9,
+            speed: 0.1,
             discipline: 0.2,
-            strategy: 0.3
+            strategy: 0.5,
+            defense: 0.3,
+            luck: 0.7
         }
     },
     {
-        name: "L'ORDINE DELLA DEA BENDATA",
-        color: "green",
+        name: "Il clan della fortuna",
+        color: "violet",       // #663399
         skills: {
-            luck: 0.8,
+            strength: 0.8,
+            speed: 0.2,
+            discipline: 0.2,
+            strategy: 0.5,
+            defense: 0.2,
+            luck: 0.7
+        }
+    },
+    {
+        name: "L'ordine della dea bendata",
+        color: "yellow",    // #f7931e
+        skills: {
             strength: 0.2,
-            discipline: 0.2,
-            strategy: 0.2
-        }
-    },
-    {
-        name: "LA COMPAGNIA DELLA BUONA SORTE",
-        color: "yellow",
-        skills: {
-            luck: 0.2,
-            strength: 0.1,
+            speed: 0.1,
             discipline: 0.9,
-            strategy: 1
+            strategy: 0.5,
+            defense: 1,
+            luck: 0.7
         }
     },
     {
-        name: "L'ALLEANZA DEL SUCCESSO",
-        color: "pink",
+        name: "L'alleanza del successo",
+        color: "green",      // #39b54a
         skills: {
-            luck: 0.3,
-            strength: 0.5,
+            strength: 0.3,
+            speed: 0.5,
             discipline: 0.5,
-            strategy: 0.6
+            strategy: 0.5,
+            defense: 0.6,
+            luck: 0.7
         }
     },
     {
-        name: "L'UNIONE DEL TRIONFO",
-        color: "orange",
+        name: "L'unione del trionfo",
+        color: "pink",   // #ff0099
         skills: {
-            luck: 0.3,
-            strength: 0.5,
+            strength: 0.3,
+            speed: 0.5,
             discipline: 0.5,
-            strategy: 0.4
+            strategy: 0.5,
+            defense: 0.4,
+            luck: 0.7
         }
     }
 ]

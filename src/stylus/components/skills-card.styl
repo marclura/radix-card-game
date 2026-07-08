@@ -1,0 +1,93 @@
+.character-card
+    display: none
+
+    &[data-color="red"]
+        color: $red
+        h3
+            border-color: $red
+        .skill-bar
+            background-color: $red
+    &[data-color="blue"]
+        color: $blue
+        h3
+            border-color: $blue
+        .skill-bar
+            background-color: $blue
+    &[data-color="violet"]
+        color: $violet
+        h3
+            border-color: $violet
+        .skill-bar
+            background-color: $violet
+    &[data-color="yellow"]
+        color: $yellow
+        h3
+            border-color: $yellow
+        .skill-bar
+            background-color: $yellow
+    &[data-color="green"]
+        color: $green
+        h3
+            border-color: $green
+        .skill-bar
+            background-color: $green
+    &[data-color="pink"]
+        color: $pink
+        h3
+            border-color: $pink
+        .skill-bar
+            background-color: $pink
+
+
+    h3
+        border: border-size solid $primary
+        border-radius: 2rem
+        padding: 0.2rem 1rem
+        margin-bottom: 1rem
+
+    &.active
+        display: flex
+        flex-wrap: wrap
+
+    .character-bar
+        width: 100%
+        height: 10px
+        background-color: yellow
+
+        & + .character-bar
+            margin-top: 0.3rem
+
+    .character-skill-list
+        list-style: none
+        margin: 0
+        padding: 0
+        width: 100%
+
+        .skill-bar
+            bar-height = 1.2rem
+            height: bar-height
+            border-radius: 0.6rem
+
+    .skill-name
+        font-size: 0.8rem
+
+
+        /*
+
+        .skill-bar-container
+            bar-height = 1.2rem
+            background-color: #ccc
+            border: 1px solid black
+            padding: 0.1rem
+            padding-left: 0.15rem
+            border-radius: (bar-height / 2)
+            height: bar-height
+
+            .skill-bar
+                font-size: (bar-height * 0.55)
+                height: (bar-height - 0.3rem)
+                background-color: white
+                border-radius: ((bar-height - 0.1rem ) / 2)
+                padding-left: 0.2rem
+                text-align: left
+        */
