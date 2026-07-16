@@ -1,5 +1,8 @@
 import EventBus from '../core/EventBus.js'
 import Store from '../core/Store.js'
+import * as Characters from './../../../data/characters.js'
+import { generateCharacterCard, translateSkillKey, formatSeconds, playSound } from './../core/Utils.js'
+
 
 let p1Ready = false
 let p2Ready = false
@@ -12,6 +15,8 @@ const handlers = {  // list of event listeners
 export const el = document.querySelector('#scene-winner')
 
 const winnerMessage = document.querySelector('#scene-winner #winner-message')
+
+const characterP1 = document.querySelector('#scene-winner #game-character-p1')
 
 export function onEnter() {
     p1Ready = false
@@ -26,7 +31,8 @@ export function onEnter() {
         winner = 1
     }
 
-    winnerMessage.textContent = `Il vincitore è Player ${winner + 1} con ${Store.players[winner].points} punti che si porta a casa ${Store.players[winner].bet * 2} gettoni!`
+    winnerMessage.textContent = `${Characters.CHARACTERS[Store.players[winner].character].name} vince con ${Store.players[winner].points} punti e guadagna ${Store.players[winner].bet * 2} gettoni!`
+    //characterP1.append(generateCharacterCard(Store.players[winner].character))
 
     handlers.confirmP1 = () => {
         p1Ready = true

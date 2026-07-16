@@ -86,6 +86,11 @@ function drawCard(player) {
     const randomId = Math.floor(Math.random() * Cards.CARDS.length)
     const card = Cards.CARDS[randomId]
 
+    // positive
+    if(card.type == 'positive') playSound("./../../../assets/sounds/play-positive.mp3")
+    else if(card.type == 'special') playSound("./../../../assets/sounds/play-ok.mp3")
+    else if(card.type == 'negative') playSound("./../../../assets/sounds/negative.mp3")
+
     // card message
     cardMessage.textContent = card.message
 

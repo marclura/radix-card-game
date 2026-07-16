@@ -4,5 +4,5 @@ export const SETTINGS = {
     gameMinPoints: 0,
     gameMaxBet: 12,
     gameMinBet: 2,
-    gamePlayDuration: 100  // in seconds
+    gamePlayDuration: 10  // in seconds
 }
