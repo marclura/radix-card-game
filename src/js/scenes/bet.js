@@ -2,6 +2,7 @@ import EventBus from '../core/EventBus.js'
 import Store from '../core/Store.js'
 import * as Settings from './../../../data/settings.js'
 import * as Characters from './../../../data/characters.js'
+import { playSound } from './../core/Utils.js'
 
 
 let p1Ready = false
@@ -53,6 +54,9 @@ export function onEnter() {
             if(Store.players[0].bet < Settings.SETTINGS.gameMaxBet) {
                 Store.players[0].bet += 1
             }
+
+            playSound("./../../../assets/sounds/coin.mp3")
+
             betP1.textContent = `${Store.players[0].bet} ${betSymbol} ${Store.players[0].bet * 2}`
         }
     }
@@ -62,6 +66,9 @@ export function onEnter() {
             if(Store.players[1].bet < Settings.SETTINGS.gameMaxBet) {
                 Store.players[1].bet += 1
             }
+
+            playSound("./../../../assets/sounds/coin.mp3")
+
             betP2.textContent = `${Store.players[1].bet} ${betSymbol} ${Store.players[1].bet * 2}`
         }
     }
@@ -72,6 +79,9 @@ export function onEnter() {
             if(Store.players[0].bet > Settings.SETTINGS.gameMinBet) {
                 Store.players[0].bet -= 1
             }
+
+            playSound("./../../../assets/sounds/coin.mp3")
+
             betP1.textContent = `${Store.players[0].bet} ${betSymbol} ${Store.players[0].bet * 2}`
         }
     }
@@ -81,6 +91,9 @@ export function onEnter() {
             if(Store.players[1].bet > Settings.SETTINGS.gameMinBet) {
                 Store.players[1].bet -= 1
             }
+
+            playSound("./../../../assets/sounds/coin.mp3")
+
             betP2.textContent = `${Store.players[1].bet} ${betSymbol} ${Store.players[1].bet * 2}`
         }
     }
@@ -94,6 +107,8 @@ export function onEnter() {
             el.classList.add('disabled')
         })
 
+        playSound("./../../../assets/sounds/select.mp3")
+
     }
     handlers.confirmP2 = () => {
         p2Ready = true
@@ -102,6 +117,8 @@ export function onEnter() {
         Array.prototype.forEach.call(document.querySelector('#scene-bet .controller-p2').children, el => {
             el.classList.add('disabled')
         })
+
+        playSound("./../../../assets/sounds/select.mp3")
     }
 
     // bet up

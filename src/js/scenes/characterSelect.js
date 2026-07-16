@@ -1,6 +1,7 @@
 import EventBus from '../core/EventBus.js'
 import Store from '../core/Store.js'
 import * as Characters from '../../../data/characters.js'
+import { playSound } from './../core/Utils.js'
 
 let p1Ready = false
 let p2Ready = false
@@ -31,6 +32,7 @@ export function onEnter() {
         if(!p1Ready) {
             if (Store.players[0].character < Store.charactersCount - 1) Store.players[0].character++
             else Store.players[0].character = 0
+            playSound("./../../../assets/sounds/click.mp3")
             updateP1()
         }
     }
@@ -39,6 +41,7 @@ export function onEnter() {
         if(!p1Ready) {
             if (Store.players[0].character > 0) Store.players[0].character--
             else Store.players[0].character = Store.charactersCount - 1
+            playSound("./../../../assets/sounds/click.mp3")
             updateP1()
         }
     }
@@ -47,6 +50,7 @@ export function onEnter() {
         if(!p2Ready) {
             if (Store.players[1].character < Store.charactersCount - 1) Store.players[1].character++
             else Store.players[1].character = 0
+            playSound("./../../../assets/sounds/click.mp3")
             updateP2()
         }
     }
@@ -55,6 +59,7 @@ export function onEnter() {
         if(!p2Ready) {
             if (Store.players[1].character > 0) Store.players[1].character--
             else Store.players[1].character = Store.charactersCount - 1
+            playSound("./../../../assets/sounds/click.mp3")
             updateP2()
         }
     }
@@ -67,6 +72,8 @@ export function onEnter() {
         Array.prototype.forEach.call(document.querySelector('#character-selector-controller-p1').children, el => {
             el.classList.add('disabled')
         })
+
+        playSound("./../../../assets/sounds/select.mp3")
 
         if (p1Ready && p2Ready) {
             // save current player for P1 and P2
@@ -81,6 +88,8 @@ export function onEnter() {
         Array.prototype.forEach.call(document.querySelector('#character-selector-controller-p2').children, el => {
             el.classList.add('disabled')
         })
+
+        playSound("./../../../assets/sounds/select.mp3")
 
         if (p1Ready && p2Ready) {
             // save current player for P1 and P2

@@ -109,3 +109,9 @@ export function formatSeconds(seconds) {
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
+
+// play audio file
+export function playSound(filePath) {
+    const audio = new Audio(filePath);
+    audio.play().catch(e => console.error("Audio error:", e));
+}

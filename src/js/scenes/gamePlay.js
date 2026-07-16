@@ -3,7 +3,7 @@ import Store from '../core/Store.js'
 import * as Cards from './../../../data/cards.js'
 import * as Settings from './../../../data/settings.js'
 import * as Characters from './../../../data/characters.js'
-import { generateCharacterCard, translateSkillKey, formatSeconds } from './../core/Utils.js'
+import { generateCharacterCard, translateSkillKey, formatSeconds, playSound } from './../core/Utils.js'
 
 let currentTurn = 0 // player 0 or 1
 
@@ -28,7 +28,6 @@ const cardPoints = document.querySelector('#scene-game-play #card-points')
 const gameTimeBar = document.querySelector('#scene-game-play #game-time-bar')
 
 
-
 export function onEnter() {
 
     pointsP1.textContent = Store.players[0].score
@@ -40,11 +39,10 @@ export function onEnter() {
     pointsP1.dataset.color = Characters.CHARACTERS[Store.players[0].character].color
     pointsP2.dataset.color = Characters.CHARACTERS[Store.players[1].character].color
 
-    console.log(generateCharacterCard(Store.players[0].character))
-
-
     characterP1.append(generateCharacterCard(Store.players[0].character))
     characterP2.append(generateCharacterCard(Store.players[1].character))
+
+
 
     currentTurn = Math.round(Math.random())
     updateGUI()
@@ -52,6 +50,7 @@ export function onEnter() {
     handlers.drawCardP1 = () => {
         if(currentTurn === 0) {
             drawCard(Store.players[0])
+            updateSkillBars(0)
             pointsP1.textContent = Store.players[0].score
 
             changeTurn()
@@ -61,6 +60,7 @@ export function onEnter() {
     handlers.drawCardP2 = () => {
         if(currentTurn === 1) {
             drawCard(Store.players[1])
+            updateSkillBars(1)
             pointsP2.textContent = Store.players[1].score
             changeTurn()
         }
@@ -109,9 +109,29 @@ function drawCard(player) {
             return [skill, _value]})
     );
 
-    console.log(player.skills)
+}
 
+function updateSkillBars(id) {
+    const character = Store.players[id];
 
+    let characterCard
+
+    if(id == 0) characterCard = document.querySelector('#game-character-p1')
+    if(id == 1) characterCard = document.querySelector('#game-character-p2')
+
+    // Select all skill entries
+    characterCard.querySelectorAll('.skill-entry').forEach(entry => {
+        console.log(entry)
+        const skillName = entry.dataset.skill;
+        const skillValue = character.skills[skillName];
+        const skillBar = entry.querySelector('.skill-bar');
+
+        console.log(skillValue * 100);
+
+        if (skillBar) {
+            skillBar.style.width = `${skillValue * 100}%`;
+        }
+    });
 }
 
 function changeTurn() {

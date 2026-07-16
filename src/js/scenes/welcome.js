@@ -1,5 +1,6 @@
 import EventBus from '../core/EventBus.js'
 import { resetStore } from '../core/Store.js'
+import { playSound } from './../core/Utils.js'
 
 let p1Ready = false
 let p2Ready = false
@@ -23,11 +24,17 @@ export function onEnter() {
     handlers.clickP1 = () => {
         p1Ready = true
         btnStartP1.classList.add('disabled')
+
+        playSound("./../../../assets/sounds/select.mp3")
+
         if (p1Ready && p2Ready) EventBus.emit('scene:characterSelect')
     }
     handlers.clickP2 = () => {
         p2Ready = true
         btnStartP2.classList.add('disabled')
+
+        playSound("./../../../assets/sounds/select.mp3")
+        
         if (p1Ready && p2Ready) EventBus.emit('scene:characterSelect')
     }
 
