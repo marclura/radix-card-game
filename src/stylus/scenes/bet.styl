@@ -10,20 +10,37 @@
             margin-top: 2rem
 
             .bet-player
-                font-size: 5rem
-                
+                font-size: 8rem
                 width: 50%
                 vertical-align: middle
 
-            .bet-player + .bet-player
-                border-left: 1px solid
+                for color, value in colorMap
+                    &[data-color={color}]
+                        color: value
 
             #bet-p1
-                
-                padding-left: 3rem
+                padding-left: 10%
                 text-align: left
 
             #bet-p2
-                padding-right: 3rem
+                padding-right: 10%
                 text-align: right
+
+    .controller-container
+        .controller
+            // dyinamically change the color of the buttons according to the character
+            for color, value in colorMap
+                &[data-color={color}]
+                    button
+                        border-color: value
+
+                    .btn-icon
+                        stroke: value
+
+                    button:active
+                        background-color: value
+                        color: value
+
+                        .btn-icon
+                            stroke: value
                 

@@ -10,37 +10,52 @@
             justify-content: space-between
 
         #selection-thumb-container
-            .character-thumbnail
-                thumbnail-height = 2rem
-                text-align: center
-                margin: 0.2rem
-                height: thumbnail-height
-                position: relative
-                font-size: 0.8rem
-                line-height: 0.8rem
-                padding: 0 thumbnail-height 0 thumbnail-height
-                border: 1px solid black
-                border-radius: (thumbnail-height / 2)
+            #list-thumbnails
+                display: flex
+                justify-content: center
+                flex-wrap: wrap
+
+                .character-thumbnail
+                    text-align: center
+                    margin: 0.2rem
+                    position: relative
+
+                .thumb-selection-icon
+                    height: 2rem
+                    aspect-ratio: 1
+                    top: -0.8rem
+                    position: absolute
+                    // background-color: $primary
+                    border-radius: 50%
+                    font-size: 2.5rem
+
+                    
+                .p1-selection::before
+                    content: ">"
+                    @extends .thumb-selection-icon
+                    left: -2.5rem
+
+                .p2-selection::after
+                    content: "<"
+                    @extends .thumb-selection-icon
+                    right: -2.5rem
                 
-            .p1-selection::before
-                content: ""
-                height: 80%
-                aspect-ratio: 1
-                left: 0.2rem
-                top: 10%
-                position: absolute
-                background-color: black
-                border-radius: 50%
-            
-            .p2-selection::after
-                content: ""
-                height: 80%
-                top: 10%
-                aspect-ratio: 1
-                right: 0.2rem
-                position: absolute
-                background-color: black
-                border-radius: 50%
+                /*
+                .p2-selection::after
+                    content: ""
+                    position: absolute
+                    top: 10%
+                    right: 0.2rem
+                    width: 2.5rem
+                    height: 2.5rem
+                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 161.54 235.24' fill='none' stroke='%23050505' stroke-width='32'%3E%3Cpolyline points='154.47 147.4 80.77 221.1 7.07 147.4 80.77 221.1'/%3E%3Cline x1='80.77' y1='221.1' x2='80.77'/%3E%3C/svg%3E")
+                    background-repeat: no-repeat
+                    background-position: center
+                    background-size: contain
+                    pointer-events: none
+                    transform: rotate(90deg)
+                    transform-origin: center
+                */
 
         #selection-p1, #selection-p2
             width 30%
@@ -51,7 +66,9 @@
             padding: 0;
 
        #selection-thumb-container
-            width 20%
+            width 23%
+
+            
 
         #list-thumbs
             list-style: none;

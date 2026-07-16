@@ -1,49 +1,20 @@
+.character-name
+    border: border-size solid $primary
+    border-radius: 2rem
+    padding: 0.2rem 1rem
+    margin-bottom: 1rem
+    font-size: 1.17rem
+
 .character-card
     display: none
 
-    &[data-color="red"]
-        color: $red
-        h3
-            border-color: $red
-        .skill-bar
-            background-color: $red
-    &[data-color="blue"]
-        color: $blue
-        h3
-            border-color: $blue
-        .skill-bar
-            background-color: $blue
-    &[data-color="violet"]
-        color: $violet
-        h3
-            border-color: $violet
-        .skill-bar
-            background-color: $violet
-    &[data-color="yellow"]
-        color: $yellow
-        h3
-            border-color: $yellow
-        .skill-bar
-            background-color: $yellow
-    &[data-color="green"]
-        color: $green
-        h3
-            border-color: $green
-        .skill-bar
-            background-color: $green
-    &[data-color="pink"]
-        color: $pink
-        h3
-            border-color: $pink
-        .skill-bar
-            background-color: $pink
-
-
-    h3
-        border: border-size solid $primary
-        border-radius: 2rem
-        padding: 0.2rem 1rem
-        margin-bottom: 1rem
+    for color, value in colorMap
+        &[data-color={color}]
+            color: value
+            h3
+                border-color: value
+            .skill-bar
+                background-color: value
 
     &.active
         display: flex
@@ -91,3 +62,16 @@
                 padding-left: 0.2rem
                 text-align: left
         */
+
+.character-card-right
+    .character-card
+        justify-content: right
+
+        .skill-entry
+            display: flex
+            flex-wrap: wrap
+            justify-content: right
+            text-align: right
+
+            .skill-name
+                width: 100%

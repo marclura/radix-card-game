@@ -18,17 +18,17 @@
                 <p class="h1">Benvenuto al gioco delle carte</p>
             </header>
             <section>
-                <p>Premi "Start" per iniziare</p>
+                <p>Premi il bottone per iniziare</p>
             </section>
         </div>
 
         <div class="controller-container">
             <div class="controller controller-p1">
-                <button class="btn-select btn-select-p1">Start</button>
+                <button class="btn-select btn-select-p1">Inizia</button>
             </div>
 
             <div class="controller controller-p2">
-                <button class="btn-select btn-select-p2">Start</button>
+                <button class="btn-select btn-select-p2">Inizia</button>
             </div>
         </div>
     </div>
@@ -46,7 +46,7 @@
             <section>
                 <!-- P1 selection -->
                 <div id="selection-p1">
-                    <ul id="display-selection-p1"></ul>
+                    <div id="display-selection-p1"></div>
                 </div>
 
                 <!-- thumbnails list -->
@@ -56,7 +56,7 @@
 
                 <!-- P2 selection -->
                 <div id="selection-p2">
-                    <ul id="display-selection-p2"></ul>
+                    <div id="display-selection-p2" class="character-card-right"></div>
                 </div>
             </div>
         </section>
@@ -179,8 +179,8 @@
                 <section>
                     <div id="game-play-contianer">
                         <div id="score-board-p1" class="score-board">
+                            <div id="game-character-p1"></div>
                             <div id="points-p1" class="points"></div>
-                            <div id="character-p1"></div>
                         </div>
                         <div id="card-withdraw-container">
                             <div id="card-message"></div>
@@ -190,7 +190,7 @@
                         </div>
                         <div id="score-board-p2" class="score-board">
                             <div id="points-p2" class="points"></div>
-                            <div id="character-p2"></div>
+                            <div id="game-character-p2" class="character-card-right"></div>
                         </div>
                     </div>
                 </section>
@@ -233,11 +233,11 @@
 
         <div class="controller-container">
             <div class="controller controller-p1">
-                <button class="btn-select btn-select-p1">Restart</button>
+                <button class="btn-select btn-select-p1">Ricomincia</button>
             </div>
 
             <div class="controller controller-p2">
-                <button class="btn-select btn-select-p2">Restart</button>
+                <button class="btn-select btn-select-p2">Ricomincia</button>
             </div>
         </div>
     </div>

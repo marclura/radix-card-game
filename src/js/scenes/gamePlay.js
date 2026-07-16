@@ -2,6 +2,8 @@ import EventBus from '../core/EventBus.js'
 import Store from '../core/Store.js'
 import * as Cards from './../../../data/cards.js'
 import * as Settings from './../../../data/settings.js'
+import * as Characters from './../../../data/characters.js'
+import { generateCharacterCard, translateSkillKey, formatSeconds } from './../core/Utils.js'
 
 let currentTurn = 0 // player 0 or 1
 
@@ -13,14 +15,36 @@ export const el = document.querySelector('#scene-game-play')
 
 const pointsP1 = document.querySelector('#scene-game-play #points-p1')
 const pointsP2 = document.querySelector('#scene-game-play #points-p2')
+
+const characterP1 = document.querySelector('#scene-game-play #game-character-p1')
+const characterP2 = document.querySelector('#scene-game-play #game-character-p2')
+
+const cardDecksP1 = document.querySelector('#scene-game-play #card-decks-p1')
+const cardDecksP2 = document.querySelector('#scene-game-play #card-decks-p2')
+
 const cardMessage = document.querySelector('#scene-game-play #card-message')
 const cardPoints = document.querySelector('#scene-game-play #card-points')
+
 const gameTimeBar = document.querySelector('#scene-game-play #game-time-bar')
+
+
 
 export function onEnter() {
 
     pointsP1.textContent = Store.players[0].score
     pointsP2.textContent = Store.players[1].score
+
+    cardDecksP1.dataset.color = Characters.CHARACTERS[Store.players[0].character].color
+    cardDecksP2.dataset.color = Characters.CHARACTERS[Store.players[1].character].color
+
+    pointsP1.dataset.color = Characters.CHARACTERS[Store.players[0].character].color
+    pointsP2.dataset.color = Characters.CHARACTERS[Store.players[1].character].color
+
+    console.log(generateCharacterCard(Store.players[0].character))
+
+
+    characterP1.append(generateCharacterCard(Store.players[0].character))
+    characterP2.append(generateCharacterCard(Store.players[1].character))
 
     currentTurn = Math.round(Math.random())
     updateGUI()
@@ -29,6 +53,7 @@ export function onEnter() {
         if(currentTurn === 0) {
             drawCard(Store.players[0])
             pointsP1.textContent = Store.players[0].score
+
             changeTurn()
         }
     }
@@ -69,8 +94,10 @@ function drawCard(player) {
 
     // score
     player.score += card.score
+    /*
     if(player.score < Settings.SETTINGS.gameMinPoints) player.score = 0
     if(player.score > Settings.SETTINGS.gameMaxPoints) player.score = 0
+    */
 
     // skills update
     player.skills = Object.fromEntries(
@@ -81,6 +108,9 @@ function drawCard(player) {
             if(_value < 0.0) _value = 0
             return [skill, _value]})
     );
+
+    console.log(player.skills)
+
 
 }
 
@@ -104,14 +134,14 @@ function startTimer(callback) {
 
     let remaining = Settings.SETTINGS.gamePlayDuration
 
-    gameTimeBar.textContent = remaining
+    gameTimeBar.textContent = formatSeconds(remaining)
 
     const interval = setInterval(() => {
         remaining--
         const percentage = (remaining / Settings.SETTINGS.gamePlayDuration) * 100
         gameTimeBar.style.width = percentage + '%';
 
-        gameTimeBar.textContent = remaining
+        gameTimeBar.textContent = formatSeconds(remaining)
 
         if(remaining <= 0) {
             clearInterval(interval)

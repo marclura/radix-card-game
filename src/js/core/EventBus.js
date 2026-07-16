@@ -13,7 +13,7 @@ const EventBus = {
 
     off(event, callback) {
         if(!this._listeners[event]) return
-        this._listeners[event] = this._listeners(cb => cb !== callback)
+        this._listeners[event] = this._listeners[event].filter(cb => cb !== callback)
     }
 }
 

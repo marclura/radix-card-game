@@ -64,7 +64,7 @@ export function onEnter() {
 
         Store.players[0].skills = Characters.CHARACTERS[Store.players[0].character].skills;
 
-        [...document.querySelector('#character-selector-controller-p1').children].forEach(el => {
+        Array.prototype.forEach.call(document.querySelector('#character-selector-controller-p1').children, el => {
             el.classList.add('disabled')
         })
 
@@ -78,7 +78,7 @@ export function onEnter() {
 
         Store.players[1].skills = Characters.CHARACTERS[Store.players[1].character].skills;
 
-        [...document.querySelector('#character-selector-controller-p2').children].forEach(el => {
+        Array.prototype.forEach.call(document.querySelector('#character-selector-controller-p2').children, el => {
             el.classList.add('disabled')
         })
 
@@ -110,11 +110,11 @@ export function onExit() {
     document.querySelector('#scene-character-select .btn-B-p2').removeEventListener('click', handlers.nextP2)
     document.querySelector('#scene-character-select .btn-select-p2').removeEventListener('click', handlers.confirmP2);
 
-    [...document.querySelector('#character-selector-controller-p1').children].forEach(el => {
+    Array.prototype.forEach.call(document.querySelector('#character-selector-controller-p1').children, el => {
         el.classList.remove('disabled')
     });
 
-    [...document.querySelector('#character-selector-controller-p2').children].forEach(el => {
+    Array.prototype.forEach.call(document.querySelector('#character-selector-controller-p2').children, el => {
         el.classList.remove('disabled')
     });
 }
@@ -122,7 +122,7 @@ export function onExit() {
 function updateP1() {
 
     // selection display
-    [...displaySelectionP1.children].forEach(el => {
+    Array.prototype.forEach.call(displaySelectionP1.children, el => {
         el.classList.remove('active')
     });
 
@@ -130,7 +130,7 @@ function updateP1() {
 
 
     // thumbnail list
-    [...listCharacters.children].forEach(el => {
+    Array.prototype.forEach.call(listCharacters.children, el => {
         el.classList.remove('p1-selection')
     });
 
@@ -143,14 +143,14 @@ function updateP1() {
 function updateP2() {
 
     // selection display
-    [...displaySelectionP2.children].forEach(el => {
+    Array.prototype.forEach.call(displaySelectionP2.children, el => {
         el.classList.remove('active')
     });
 
     displaySelectionP2.children[Store.players[1].character].classList.add('active');
 
     // thumbnail list
-    [...listCharacters.children].forEach(el => {
+    Array.prototype.forEach.call(listCharacters.children, el => {
         el.classList.remove('p2-selection')
     });
 

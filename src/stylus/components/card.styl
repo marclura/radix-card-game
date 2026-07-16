@@ -3,18 +3,21 @@
     width: 100%
     justify-content: space-between
 
+    for color, value in colorMap
+        &[data-color={color}]
+            .card-deck
+                border-color: value
+
 .card
     aspect-ratio: 1 / 2
     border-radius: 0.6rem
-    border: 0.1rem solid black
+    border: 0.15rem solid $primary
 
 .card-deck
     width: 20%
     background-repeat: no-repeat
     background-position: center center
     background-size: 70%
-    filter: hue-rotate(90deg) saturate(2)
-
 
 .card-deck-1
     background-image: url('../../assets/cards/card-icon-1.svg')

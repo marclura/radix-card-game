@@ -14,35 +14,74 @@
     #game-play-contianer
         display: flex
         justify-content: space-between
-        text-align: center
 
         #card-withdraw-container
             display: flex
             flex-wrap: wrap
             justify-content: center
+            text-align: center
+
             #card-message
                 width: 100%
-                font-size: 1.2rem
-                font-weight: 600
+                font-size: 2rem
 
             #card-reveal
                 width: 5rem
                 display: flex
                 justify-content: center
                 align-items: center
+                width: 10rem
+                margin-top: 2rem
 
                 #card-points
-                    font-size: 2rem
+                    font-size: 5rem
 
 
         .score-board
-            width: 30%
+            width: 40%
+            display: flex
+            justify-content: space-between
+            padding: 3rem 2rem 0 2rem
+
+            .character-card
+                display: inline-block
+
 
             .points
-                font-size: 3rem
+                font-size: 8rem
 
-    .controller.not-current-turn
-        opacity: 0.3
-        background-color: #888
+                for color, value in colorMap
+                    &[data-color={color}]
+                        color: value
 
 
+    .controller
+        &.not-current-turn
+            opacity: 0.3
+            background-color: #888
+
+            .card-decks-container
+                button:active
+                    background-color: transparent !important
+
+        .card-decks-container
+
+            for color, value in colorMap
+                &[data-color={color}]
+                    button
+                        background-color: rgba(
+                            red(value),
+                            green(value),
+                            blue(value),
+                            0.5
+                        )
+
+            for color, value in colorMap
+                &[data-color={color}]
+                    button:active
+                        background-color: rgba(
+                        red(value),
+                        green(value),
+                        blue(value),
+                        0.8
+                    )
