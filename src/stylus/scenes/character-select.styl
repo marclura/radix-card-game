@@ -12,13 +12,20 @@
         #selection-thumb-container
             #list-thumbnails
                 display: flex
-                justify-content: center
                 flex-wrap: wrap
+                flex-direction: column
+                justify-content: center
 
                 .character-thumbnail
                     text-align: center
-                    margin: 0.2rem
                     position: relative
+                    width: fit-content
+                    margin-right: auto
+                    margin-left: auto
+
+                    & + .character-thumbnail
+                        margin-top: 1rem
+
 
                 .thumb-selection-icon
                     height: 2rem

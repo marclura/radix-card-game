@@ -3,10 +3,12 @@
     width: 100%
     justify-content: space-between
 
+    /*
     for color, value in colorMap
         &[data-color={color}]
             .card-deck
                 border-color: value
+    */
 
 .card
     aspect-ratio: 1 / 2
@@ -21,9 +23,12 @@
 
 .card-deck-1
     background-image: url('../../assets/cards/card-icon-1.svg')
+    background-color: $card-red
 
 .card-deck-2
     background-image: url('../../assets/cards/card-icon-2.svg')
+    background-color: $card-silver
 
 .card-deck-3
-    background-image: url('../../assets/cards/card-icon-3.svg')   
+    background-image: url('../../assets/cards/card-icon-3.svg')
+    background-color: $card-green

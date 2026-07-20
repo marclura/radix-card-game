@@ -7,10 +7,8 @@ const Store = {
             score: 100,
             skills: {
                 strength: 0,
-                speed: 0,
                 discipline: 0,
                 strategy: 0,
-                defense: 0,
                 luck: 0
             },
             bet: 0
@@ -20,10 +18,8 @@ const Store = {
             score: 100,
             skills: {
                 strength: 0,
-                speed: 0,
                 discipline: 0,
                 strategy: 0,
-                defense: 0,
                 luck: 0
             },
             bet: 0

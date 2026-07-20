@@ -9,9 +9,3 @@ populateCharacters()
 SceneManager.goToScene('welcome')
 
 
-
-// Create audio object
-const soundtrack = new Audio('./../../assets/sounds/soundtrack.mp3')
-soundtrack.loop = true
-soundtrack.play().catch(e => console.error("Audio play failed:", e))
-

@@ -4,10 +4,8 @@ export const CARDS = [
         score: 20,
         skills: {
             strength: 0.,
-            speed: 0.0,
             discipline: 0.15,
             strategy: 0.35,
-            defense: 0.0,
             luck: 0.0
         },
         message: "Strategia vincente!",
@@ -17,10 +15,8 @@ export const CARDS = [
         score: 20,
         skills: {
             strength: 0.2,
-            speed: 0.0,
             discipline: 0.0,
             strategy: 0.0,
-            defense: 0.2,
             luck: 0.0
         },
         message: "Giocata perfetta!",
@@ -30,10 +26,8 @@ export const CARDS = [
         score: 15,
         skills: {
             strength: 0.0,
-            speed: 0.0,
             discipline: 0.0,
             strategy: 0.01,
-            defense: 0.3,
             luck: 0.0
         },
         message: "Mossa decisiva!",
@@ -43,10 +37,8 @@ export const CARDS = [
         score: 15,
         skills: {
             strength: 0.0,
-            speed: 0.0,
             discipline: 0.0,
             strategy: 0.15,
-            defense: 0.0,
             luck: 0.0
         },
         message: "Calcolo perfetto!",
@@ -56,10 +48,8 @@ export const CARDS = [
         score: 10,
         skills: {
             strength: 0.0,
-            speed: 0.0,
             discipline: 0.0,
             strategy: 0.0,
-            defense: 0.0,
             luck: 0.4
         },
         message: "Questo mazzo è fortunato!",
@@ -69,10 +59,8 @@ export const CARDS = [
         score: 10,
         skills: {
             strength: 0.0,
-            speed: 0.0,
             discipline: 0.0,
             strategy: 0.0,
-            defense: 0.0,
             luck: 0.45
         },
         message: "Mano fortunata!",
@@ -82,10 +70,8 @@ export const CARDS = [
         score: 5,
         skills: {
             strength: 0.0,
-            speed: 0.0,
             discipline: 0.0,
             strategy: 0.0,
-            defense: 0.0,
             luck: 0.3
         },
         message: "Colpo di fortuna!",
@@ -95,10 +81,8 @@ export const CARDS = [
         score: 5,
         skills: {
             strength: 0.3,
-            speed: 0.0,
             discipline: 0.0,
             strategy: 0.0,
-            defense: 0.0,
             luck: -0.0
         },
         message: "Non é fortuna ma talento!",
@@ -110,10 +94,8 @@ export const CARDS = [
         score: -20,
         skills: {
             strength: 0.0,
-            speed: 0.0,
             discipline: 0.0,
             strategy: 0.0,
-            defense: 0.0,
             luck: -0.43
         },
         message: "Questo mazzo è sfortunato!",
@@ -123,10 +105,8 @@ export const CARDS = [
         score: -20,
         skills: {
             strength: -0.03,
-            speed: -0.03,
             discipline: -0.03,
             strategy: -0.03,
-            defense: -0.03,
             luck: -0.45
         },
         message: "Il mazzo ha deciso!",
@@ -136,10 +116,8 @@ export const CARDS = [
         score: -20,
         skills: {
             strength: -0.05,
-            speed: -0.05,
             discipline: -0.05,
             strategy: -0.05,
-            defense: -0.05,
             luck: -0.5
         },
         message: "Imprevisto inaspettato!",
@@ -149,10 +127,8 @@ export const CARDS = [
         score: -15,
         skills: {
             strength: -0.05,
-            speed: -0.05,
             discipline: -0.05,
             strategy: -0.35,
-            defense: -0.05,
             luck: -0.05
         },
         message: "Occasione mancata!",
@@ -162,10 +138,8 @@ export const CARDS = [
         score: -15,
         skills: {
             strength: -0.02,
-            speed: -0.02,
             discipline: -0.02,
             strategy: -0.02,
-            defense: -0.02,
             luck: -0.35
         },
         message: "Colpo di sfortuna!",
@@ -175,10 +149,8 @@ export const CARDS = [
         score: -15,
         skills: {
             strength: -0.02,
-            speed: -0.02,
             discipline: -0.02,
             strategy: -0.02,
-            defense: -0.02,
             luck: -0.3
         },
         message: "Tocco sfortunato!",
@@ -188,10 +160,8 @@ export const CARDS = [
         score: -10,
         skills: {
             strength: -0.1,
-            speed: -0.1,
             discipline: -0.3,
             strategy: -0.1,
-            defense: -0.05,
             luck: -0.02
         },
         message: "Scelta sbagliata!",
@@ -201,10 +171,8 @@ export const CARDS = [
         score: -10,
         skills: {
             strength: -0.05,
-            speed: -0.05,
             discipline: -0.05,
             strategy: -0.35,
-            defense: -0.05,
             luck: -0.05
         },
         message: "Mossa perdente!",
@@ -214,10 +182,8 @@ export const CARDS = [
         score: -10,
         skills: {
             strength: -0.05,
-            speed: -0.05,
             discipline: -0.05,
             strategy: -0.05,
-            defense: -0.05,
             luck: -0.05
         },
         message: "Cambia mazzo!",
@@ -227,10 +193,8 @@ export const CARDS = [
         score: -5,
         skills: {
             strength: -0.05,
-            speed: -0.05,
             discipline: -0.05,
             strategy: -0.05,
-            defense: -0.05,
             luck: -0.05
         },
         message: "Riprova!",
@@ -240,10 +204,8 @@ export const CARDS = [
         score: -5,
         skills: {
             strength: -0.02,
-            speed: -0.02,
             discipline: -0.02,
             strategy: -0.02,
-            defense: -0.02,
             luck: -0.02
         },
         message: "Giornata no!",
@@ -253,10 +215,8 @@ export const CARDS = [
         score: -5,
         skills: {
             strength: -0.02,
-            speed: -0.02,
             discipline: -0.02,
             strategy: -0.02,
-            defense: -0.02,
             luck: -0.02
         },
         message: "La prossima andrà melgio!",
@@ -268,10 +228,8 @@ export const CARDS = [
         score: 0,
         skills: {
             strength: 0.05,
-            speed: 0.05,
             discipline: 0.05,
             strategy: 0.05,
-            defense: 0.05,
             luck: 0.1
         },
         message: "Ce l'hai quasi fatta!",
@@ -281,10 +239,8 @@ export const CARDS = [
         score: 0,
         skills: {
             strength: 0.03,
-            speed: 0.03,
             discipline: 0.03,
             strategy: 0.03,
-            defense: 0.03,
             luck: 0.15
         },
         message: "È il tuo momento!",
@@ -294,10 +250,8 @@ export const CARDS = [
         score: 0,
         skills: {
             strength: 0.02,
-            speed: 0.02,
             discipline: 0.02,
             strategy: 0.02,
-            defense: 0.02,
             luck: 0.08
         },
         message: "Hai una buona sensazione!",
@@ -307,10 +261,8 @@ export const CARDS = [
         score: 0,
         skills: {
             strength: 0,
-            speed: 0,
             discipline: 0,
             strategy: 0,
-            defense: 0,
             luck: 0
         },
         message: "Tutto può succedere!",
@@ -320,10 +272,8 @@ export const CARDS = [
         score: 0,
         skills: {
             strength: 0.05,
-            speed: 0.05,
             discipline: 0.05,
             strategy: 0.08,
-            defense: 0.05,
             luck: -0.1
         },
         message: "La sfida continua!",
@@ -333,10 +283,8 @@ export const CARDS = [
         score: 0,
         skills: {
             strength: 0.08,
-            speed: 0.08,
             discipline: 0.05,
             strategy: 0.05,
-            defense: 0.05,
             luck: -0.15
         },
         message: "Continua così!",
