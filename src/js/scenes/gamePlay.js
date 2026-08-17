@@ -27,6 +27,7 @@ const cardPoints = document.querySelector('#scene-game-play #card-points')
 
 const gameTimeBar = document.querySelector('#scene-game-play #game-time-bar')
 
+let timerInterval = null
 
 export function onEnter() {
 
@@ -39,6 +40,9 @@ export function onEnter() {
     pointsP1.dataset.color = Characters.CHARACTERS[Store.players[0].character].color
     pointsP2.dataset.color = Characters.CHARACTERS[Store.players[1].character].color
 
+    // clear any previously appended character cards to avoid duplicates on re-entry
+    characterP1.innerHTML = ''
+    characterP2.innerHTML = ''
     characterP1.append(generateCharacterCard(Store.players[0].character))
     characterP2.append(generateCharacterCard(Store.players[1].character))
 
@@ -121,17 +125,20 @@ function updateSkillBars(id) {
 
     let characterCard
 
-    if(id == 0) characterCard = document.querySelector('#game-character-p1')
-    if(id == 1) characterCard = document.querySelector('#game-character-p2')
+    if (id === 0) {
+        characterCard = document.querySelector('#game-character-p1')
+    } else if (id === 1) {
+        characterCard = document.querySelector('#game-character-p2')
+    } else {
+        console.error(`updateSkillBars: invalid player id ${id}`)
+        return
+    }
 
     // Select all skill entries
     characterCard.querySelectorAll('.skill-entry').forEach(entry => {
-        console.log(entry)
         const skillName = entry.dataset.skill;
         const skillValue = character.skills[skillName];
         const skillBar = entry.querySelector('.skill-bar');
-
-        console.log(skillValue * 100);
 
         if (skillBar) {
             skillBar.style.width = `${skillValue * 100}%`;
@@ -161,7 +168,7 @@ function startTimer(callback) {
 
     gameTimeBar.textContent = formatSeconds(remaining)
 
-    const interval = setInterval(() => {
+    timerInterval = setInterval(() => {
         remaining--
         const percentage = (remaining / Settings.SETTINGS.gamePlayDuration) * 100
         gameTimeBar.style.width = percentage + '%';
@@ -169,7 +176,8 @@ function startTimer(callback) {
         gameTimeBar.textContent = formatSeconds(remaining)
 
         if(remaining <= 0) {
-            clearInterval(interval)
+            clearInterval(timerInterval)
+            timerInterval = null
             callback()
         }
     }, 1000)
@@ -177,6 +185,11 @@ function startTimer(callback) {
 
 
 export function onExit() {
+    // stop the timer if it is still running
+    if (timerInterval) {
+        clearInterval(timerInterval)
+        timerInterval = null
+    }
     gameTimeBar.style.width = '100%'
     
     document.querySelector('#card-deck-1-p1').removeEventListener('click', handlers.drawCardP1)

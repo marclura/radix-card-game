@@ -45,8 +45,8 @@ export function onEnter() {
     Store.players[0].bet = Settings.SETTINGS.gameMinBet
     Store.players[1].bet = Settings.SETTINGS.gameMinBet
 
-    betP1.textContent = betP2.textContent = `${Store.players[0].bet} ${betSymbol} ${Store.players[0].bet * 2}`
-    betP2.textContent = betP2.textContent = `${Store.players[1].bet} ${betSymbol} ${Store.players[1].bet * 2}`
+    betP1.textContent = `${Store.players[0].bet} ${betSymbol} ${Store.players[0].bet * 2}`
+    betP2.textContent = `${Store.players[1].bet} ${betSymbol} ${Store.players[1].bet * 2}`
 
     // bet up
     handlers.betUpP1 = () => {

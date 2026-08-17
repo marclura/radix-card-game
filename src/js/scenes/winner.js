@@ -22,16 +22,21 @@ export function onEnter() {
     p1Ready = false
     p2Ready = false
 
+    const p1 = Store.players[0]
+    const p2 = Store.players[1]
+
     let winner
-
-    if(Store.players[0].points > Store.players[1].points) {
+    if (p1.score > p2.score) {
         winner = 0
-    }
-    else {
+    } else if (p2.score > p1.score) {
         winner = 1
+    } else {
+        // tie
+        winnerMessage.textContent = `Pareggio! ${Characters.CHARACTERS[p1.character].name} e ${Characters.CHARACTERS[p2.character].name} terminano alla pari con ${p1.score} punti!`
+        return
     }
 
-    winnerMessage.textContent = `${Characters.CHARACTERS[Store.players[winner].character].name} vince con ${Store.players[winner].points} punti e guadagna ${Store.players[winner].bet * 2} gettoni!`
+    winnerMessage.textContent = `${Characters.CHARACTERS[Store.players[winner].character].name} vince con ${Store.players[winner].score} punti e guadagna ${Store.players[winner].bet * 2} gettoni!`
     //characterP1.append(generateCharacterCard(Store.players[winner].character))
 
     handlers.confirmP1 = () => {

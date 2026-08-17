@@ -13,6 +13,11 @@ const SceneManager = {
 
         console.log("goToScene: " + sceneName);
 
+        if (!scenes[sceneName]) {
+            console.error(`SceneManager: unknown scene "${sceneName}"`)
+            return
+        }
+
         if (currentScene) {
             currentScene.onExit() // if currentScene is != null, exit current one
             currentScene.el.classList.remove('is-active')   // hide the html elements

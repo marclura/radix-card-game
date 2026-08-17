@@ -7,6 +7,11 @@ export function populateCharacters() {
     const displaySelectionP1 = document.querySelector('#display-selection-p1')
     const displaySelectionP2 = document.querySelector('#display-selection-p2')
 
+    // DOM fragments (invisible container that won't make the browser recalculate the layout)
+    const thumbFrag = document.createDocumentFragment()
+    const p1Frag = document.createDocumentFragment()
+    const p2Frag = document.createDocumentFragment()
+
     Characters.CHARACTERS.forEach((el, index) => {
 
         // thumbnails
@@ -18,17 +23,23 @@ export function populateCharacters() {
         thumbnail.append(h3)
         // thumbnail.style.backgroundColor = el.color
         thumbnail.classList.add('character-thumbnail')
-        listCharacters.append(thumbnail)
+        thumbFrag.append(thumbnail)
 
         const card = generateCharacterCard(index)
+        const card2 = card.cloneNode(true)  // clone it for the 2nd player
 
-        // clone it for the 2nd player
-        const card2 = card.cloneNode(true)
+        p1Frag.append(card)
+        p2Frag.append(card2)
 
-        displaySelectionP1.append(card)
-        displaySelectionP2.append(card2)
+        
 
     });
+
+    // append only one when the Fragments are ready with all the content
+    listCharacters.append(thumbFrag)
+    displaySelectionP1.append(p1Frag)
+    displaySelectionP2.append(p2Frag)
+
 }
 
 // generate character card
@@ -111,7 +122,14 @@ export function formatSeconds(seconds) {
 }
 
 // play audio file
+const audioCache = new Map() // cache the audio, check if not already loaded
+
 export function playSound(filePath) {
-    const audio = new Audio(filePath);
+    let audio = audioCache.get(filePath)    
+    if (!audio) {
+        audio = new Audio(filePath)
+        audioCache.set(filePath, audio)
+    }
+    audio.currentTime = 0
     audio.play().catch(e => console.error("Audio error:", e));
 }

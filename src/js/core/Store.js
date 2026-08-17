@@ -30,8 +30,14 @@ const Store = {
 export function resetStore() {
     Store.players.forEach(el => {
         el.character = 0
-        el.points = 100
+        el.score = 100
         el.bet = 0
+        el.skills = {
+            strength: 0,
+            discipline: 0,
+            strategy: 0,
+            luck: 0
+        }
     })
 }
 
