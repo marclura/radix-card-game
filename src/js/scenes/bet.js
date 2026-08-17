@@ -100,25 +100,28 @@ export function onEnter() {
 
     // confirm
     handlers.confirmP1 = () => {
-        p1Ready = true
-        if (p1Ready && p2Ready) EventBus.emit('scene:gamePlay');
+        if(!p1Ready) {
+            p1Ready = true
+            if (p1Ready && p2Ready) EventBus.emit('scene:gamePlay');
 
-        Array.prototype.forEach.call(document.querySelector('#scene-bet .controller-p1').children, el => {
-            el.classList.add('disabled')
-        })
+            Array.prototype.forEach.call(document.querySelector('#scene-bet .controller-p1').children, el => {
+                el.classList.add('disabled')
+            })
 
-        playSound("./../../../assets/sounds/select.mp3")
-
+            playSound("./../../../assets/sounds/select.mp3")
+        }
     }
     handlers.confirmP2 = () => {
-        p2Ready = true
-        if (p1Ready && p2Ready) EventBus.emit('scene:gamePlay');
+        if(!p2Ready) {
+            p2Ready = true
+            if (p1Ready && p2Ready) EventBus.emit('scene:gamePlay');
 
-        Array.prototype.forEach.call(document.querySelector('#scene-bet .controller-p2').children, el => {
-            el.classList.add('disabled')
-        })
+            Array.prototype.forEach.call(document.querySelector('#scene-bet .controller-p2').children, el => {
+                el.classList.add('disabled')
+            })
 
-        playSound("./../../../assets/sounds/select.mp3")
+            playSound("./../../../assets/sounds/select.mp3")
+        }
     }
 
     // bet up

@@ -1,6 +1,8 @@
+$card-stack-offset = -0.4rem
+
 .card-decks-container
     display: flex
-    width: 100%
+    width: 95%
     justify-content: space-between
 
     /*
@@ -10,25 +12,75 @@
                 border-color: value
     */
 
-.card
-    aspect-ratio: 1 / 2
+.card-aspect
+    aspect-ratio: 63 / 88
     border-radius: 0.6rem
+
+.card
+    @extends .card-aspect
     border: 0.15rem solid $primary
+    background-repeat: no-repeat
+    background-position: center center
+    background-size: 75%
+
+    &:active
+        position: relative
+        top: 1rem
 
 .card-deck
     width: 20%
-    background-repeat: no-repeat
-    background-position: center center
     background-size: 70%
+    padding: 0
+    @extends .card-aspect
+    position: relative
+    border: none
+    box-sizing: content-box
+
+    &:active
+        background-color: unset
+
+.card-deck-card-stack
+    @extends .card
+    width: 100%
+    position: absolute
+    background-color: $background
 
 .card-deck-1
     background-image: url('../../assets/cards/card-icon-1.svg')
-    background-color: $card-red
+    background-color: $card-red !important
 
 .card-deck-2
     background-image: url('../../assets/cards/card-icon-2.svg')
-    background-color: $card-silver
+    background-color: $card-silver !important
 
 .card-deck-3
     background-image: url('../../assets/cards/card-icon-3.svg')
-    background-color: $card-green
+    background-color: $card-green !important
+
+
+// card stack
+
+.card-stack-1
+    z-index: -1
+    top: $card-stack-offset
+    right: $card-stack-offset
+
+.card-stack-2
+    z-index: -2
+    top: $card-stack-offset * 2
+    right: $card-stack-offset  * 2
+
+.card-stack-3
+    z-index: -3
+    top: $card-stack-offset * 3
+    right: $card-stack-offset * 3
+
+.card-stack-4
+    z-index: -4
+    top: $card-stack-offset * 4
+    right: $card-stack-offset * 4
+
+.card-stack-5
+    z-index: -5
+    top: $card-stack-offset * 5
+    right: $card-stack-offset * 5

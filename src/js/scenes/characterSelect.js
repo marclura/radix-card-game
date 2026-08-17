@@ -65,15 +65,19 @@ export function onEnter() {
     }
 
     handlers.confirmP1 = () => {
-        p1Ready = true;
+        if(!p1Ready) {
 
-        Store.players[0].skills = { ...Characters.CHARACTERS[Store.players[0].character].skills };
+            p1Ready = true;
+            Store.players[0].skills = { ...Characters.CHARACTERS[Store.players[0].character].skills };
 
-        Array.prototype.forEach.call(document.querySelector('#character-selector-controller-p1').children, el => {
-            el.classList.add('disabled')
-        })
+            Array.prototype.forEach.call(document.querySelector('#character-selector-controller-p1').children, el => {
+                el.classList.add('disabled')
+            })
 
-        playSound("./../../../assets/sounds/select.mp3")
+            playSound("./../../../assets/sounds/select.mp3")
+        }
+
+        
 
         if (p1Ready && p2Ready) {
             // save current player for P1 and P2
@@ -81,15 +85,17 @@ export function onEnter() {
         }
     }
     handlers.confirmP2 = () => {
-        p2Ready = true;
+        if(!p2Ready) {
+            p2Ready = true;
 
-        Store.players[1].skills = { ...Characters.CHARACTERS[Store.players[1].character].skills };
+            Store.players[1].skills = { ...Characters.CHARACTERS[Store.players[1].character].skills };
 
-        Array.prototype.forEach.call(document.querySelector('#character-selector-controller-p2').children, el => {
-            el.classList.add('disabled')
-        })
+            Array.prototype.forEach.call(document.querySelector('#character-selector-controller-p2').children, el => {
+                el.classList.add('disabled')
+            })
 
-        playSound("./../../../assets/sounds/select.mp3")
+            playSound("./../../../assets/sounds/select.mp3")
+        }
 
         if (p1Ready && p2Ready) {
             // save current player for P1 and P2
