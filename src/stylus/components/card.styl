@@ -51,6 +51,8 @@ $card-stack-count = 6
     width: 100%
     position: absolute
     background-color: $background
+    &:active
+        position: absolute  // important else it gets in conflict with pos: relative
 
 .card-deck-1
     background-image: url('../../assets/cards/card-icon-1.svg')
