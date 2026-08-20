@@ -8,3 +8,69 @@
 
     &.is-active
         display: block
+
+
+// Phase title overlay (shown during scene transitions)
+
+#phase-title-overlay
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    background: rgba(255, 255, 255, 1)   // change opacity
+    z-index: 1000
+    pointer-events: none
+    opacity: 0
+
+    // step 1 - overlay fades to white
+    &.is-fading-in
+        animation: overlayFadeIn var(--fade-in-duration) ease forwards
+
+    // step 6 - overlay fades out revealing the new scene
+    &.is-fading-out
+        animation: overlayFadeOut var(--fade-out-duration) ease forwards
+
+#phase-title-text
+    font-size: 3rem
+    font-weight: bold
+    text-align: center
+
+    // step 2 - text drops down
+    &.is-dropping
+        animation: textDropIn var(--text-drop-duration) ease forwards
+
+    // step 5 - text leaves
+    &.is-leaving
+        animation: textDropOut var(--text-leave-duration) ease forwards
+
+@keyframes overlayFadeIn
+    from
+        opacity: 0
+    to
+        opacity: 1.0
+
+@keyframes overlayFadeOut
+    from
+        opacity: 1.0
+    to
+        opacity: 0
+
+@keyframes textDropIn
+    from
+        opacity: 0
+        transform: translateY(-100%)
+    to
+        opacity: 1.0
+        transform: translateY(0)
+
+@keyframes textDropOut
+    from
+        opacity: 1.0
+        transform: translateY(0)
+    to
+        opacity: 0
+        transform: translateY(-100%)
