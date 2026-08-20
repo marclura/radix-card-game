@@ -6,10 +6,7 @@ import * as Characters from './../../../data/characters.js'
 import { generateCharacterCard, translateSkillKey, formatSeconds, playSound } from './../core/Utils.js'
 
 let currentTurn = 0 // player 0 or 1
-
-const handlers = {  // list of event listeners
-    
-}
+let controller = null
 
 export const el = document.querySelector('#scene-game-play')
 
@@ -46,44 +43,69 @@ export function onEnter() {
     characterP1.append(generateCharacterCard(Store.players[0].character))
     characterP2.append(generateCharacterCard(Store.players[1].character))
 
-
-
     currentTurn = Math.round(Math.random())
     updateGUI()
 
-    handlers.drawCardP1 = () => {
+    controller = new AbortController()
+
+    document.querySelector('#card-deck-1-p1').addEventListener('click', () => {
         if(currentTurn === 0) {
             drawCard(Store.players[0])
             updateSkillBars(0)
             pointsP1.textContent = Store.players[0].score
-
             changeTurn()
         }
-    }
+    }, { signal: controller.signal })
 
-    handlers.drawCardP2 = () => {
+    document.querySelector('#card-deck-2-p1').addEventListener('click', () => {
+        if(currentTurn === 0) {
+            drawCard(Store.players[0])
+            updateSkillBars(0)
+            pointsP1.textContent = Store.players[0].score
+            changeTurn()
+        }
+    }, { signal: controller.signal })
+
+    document.querySelector('#card-deck-3-p1').addEventListener('click', () => {
+        if(currentTurn === 0) {
+            drawCard(Store.players[0])
+            updateSkillBars(0)
+            pointsP1.textContent = Store.players[0].score
+            changeTurn()
+        }
+    }, { signal: controller.signal })
+
+    document.querySelector('#card-deck-1-p2').addEventListener('click', () => {
         if(currentTurn === 1) {
             drawCard(Store.players[1])
             updateSkillBars(1)
             pointsP2.textContent = Store.players[1].score
             changeTurn()
         }
-    }
+    }, { signal: controller.signal })
 
-    handlers.gameIsOver = () => {
+    document.querySelector('#card-deck-2-p2').addEventListener('click', () => {
+        if(currentTurn === 1) {
+            drawCard(Store.players[1])
+            updateSkillBars(1)
+            pointsP2.textContent = Store.players[1].score
+            changeTurn()
+        }
+    }, { signal: controller.signal })
+
+    document.querySelector('#card-deck-3-p2').addEventListener('click', () => {
+        if(currentTurn === 1) {
+            drawCard(Store.players[1])
+            updateSkillBars(1)
+            pointsP2.textContent = Store.players[1].score
+            changeTurn()
+        }
+    }, { signal: controller.signal })
+
+    startTimer(() => {
         console.log("gameIsOver")
         EventBus.emit('scene:winner')
-    }
-
-    startTimer(handlers.gameIsOver)
-
-    document.querySelector('#card-deck-1-p1').addEventListener('click', handlers.drawCardP1)
-    document.querySelector('#card-deck-2-p1').addEventListener('click', handlers.drawCardP1)
-    document.querySelector('#card-deck-3-p1').addEventListener('click', handlers.drawCardP1)
-
-    document.querySelector('#card-deck-1-p2').addEventListener('click', handlers.drawCardP2)
-    document.querySelector('#card-deck-2-p2').addEventListener('click', handlers.drawCardP2)
-    document.querySelector('#card-deck-3-p2').addEventListener('click', handlers.drawCardP2)
+    })
 }
 
 function drawCard(player) {
@@ -103,10 +125,6 @@ function drawCard(player) {
 
     // score
     player.score += card.score
-    /*
-    if(player.score < Settings.SETTINGS.gameMinPoints) player.score = 0
-    if(player.score > Settings.SETTINGS.gameMaxPoints) player.score = 0
-    */
 
     // skills update
     player.skills = Object.fromEntries(
@@ -116,12 +134,11 @@ function drawCard(player) {
             if(_value > 1.0) _value = 1.0
             if(_value < 0.0) _value = 0
             return [skill, _value]})
-    );
-
+    )
 }
 
 function updateSkillBars(id) {
-    const character = Store.players[id];
+    const character = Store.players[id]
 
     let characterCard
 
@@ -136,14 +153,14 @@ function updateSkillBars(id) {
 
     // Select all skill entries
     characterCard.querySelectorAll('.skill-entry').forEach(entry => {
-        const skillName = entry.dataset.skill;
-        const skillValue = character.skills[skillName];
-        const skillBar = entry.querySelector('.skill-bar');
+        const skillName = entry.dataset.skill
+        const skillValue = character.skills[skillName]
+        const skillBar = entry.querySelector('.skill-bar')
 
         if (skillBar) {
-            skillBar.style.width = `${skillValue * 100}%`;
+            skillBar.style.width = `${skillValue * 100}%`
         }
-    });
+    })
 }
 
 function changeTurn() {
@@ -163,7 +180,7 @@ function updateGUI() {
         document.querySelector("#scene-game-play .controller-p2").classList.add('not-current-turn')
         document.querySelectorAll("#scene-game-play .controller-p1 .card-deck").forEach((el) => el.classList.remove('disabled'))
         document.querySelectorAll("#scene-game-play .controller-p2 .card-deck").forEach((el) => el.classList.add('disabled'))
-    } 
+    }
 }
 
 function startTimer(callback) {
@@ -175,7 +192,7 @@ function startTimer(callback) {
     timerInterval = setInterval(() => {
         remaining--
         const percentage = (remaining / Settings.SETTINGS.gamePlayDuration) * 100
-        gameTimeBar.style.width = percentage + '%';
+        gameTimeBar.style.width = percentage + '%'
 
         gameTimeBar.textContent = formatSeconds(remaining)
 
@@ -195,12 +212,6 @@ export function onExit() {
         timerInterval = null
     }
     gameTimeBar.style.width = '100%'
-    
-    document.querySelector('#card-deck-1-p1').removeEventListener('click', handlers.drawCardP1)
-    document.querySelector('#card-deck-2-p1').removeEventListener('click', handlers.drawCardP1)
-    document.querySelector('#card-deck-3-p1').removeEventListener('click', handlers.drawCardP1)
 
-    document.querySelector('#card-deck-1-p2').removeEventListener('click', handlers.drawCardP2)
-    document.querySelector('#card-deck-2-p2').removeEventListener('click', handlers.drawCardP2)
-    document.querySelector('#card-deck-3-p2').removeEventListener('click', handlers.drawCardP2)
+    controller.abort()
 }

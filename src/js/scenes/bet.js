@@ -4,14 +4,9 @@ import * as Settings from './../../../data/settings.js'
 import * as Characters from './../../../data/characters.js'
 import { playSound } from './../core/Utils.js'
 
-
 let p1Ready = false
 let p2Ready = false
-
-const handlers = {  // list of event listeners
-    confirmP1: null,
-    confirmP2: null
-}
+let controller = null
 
 export const el = document.querySelector('#scene-bet')
 
@@ -24,7 +19,8 @@ const betSymbol = ">"
 
 export function onEnter() {
     p1Ready = false
-    p2Ready = false;
+    p2Ready = false
+    controller = new AbortController()
 
     // set colors
     controllerP1.dataset.color = Characters.CHARACTERS[Store.players[0].character].color
@@ -33,14 +29,13 @@ export function onEnter() {
     betP1.dataset.color = Characters.CHARACTERS[Store.players[0].character].color
     betP2.dataset.color = Characters.CHARACTERS[Store.players[1].character].color
 
-
-    Array.prototype.forEach.call(document.querySelector('#scene-bet .controller-p1').children, el => {
+    Array.prototype.forEach.call(controllerP1.children, el => {
         el.style.display = 'block'
-    });
+    })
 
-    Array.prototype.forEach.call(document.querySelector('#scene-bet .controller-p2').children, el => {
+    Array.prototype.forEach.call(controllerP2.children, el => {
         el.style.display = 'block'
-    });
+    })
 
     Store.players[0].bet = Settings.SETTINGS.gameMinBet
     Store.players[1].bet = Settings.SETTINGS.gameMinBet
@@ -48,116 +43,85 @@ export function onEnter() {
     betP1.textContent = `${Store.players[0].bet} ${betSymbol} ${Store.players[0].bet * 2}`
     betP2.textContent = `${Store.players[1].bet} ${betSymbol} ${Store.players[1].bet * 2}`
 
-    // bet up
-    handlers.betUpP1 = () => {
+    // bet up p1
+    document.querySelector('#scene-bet .btn-B-p1').addEventListener('click', () => {
         if(!p1Ready) {
             if(Store.players[0].bet < Settings.SETTINGS.gameMaxBet) {
                 Store.players[0].bet += 1
             }
-
             playSound("./../../../assets/sounds/coin.mp3")
-
             betP1.textContent = `${Store.players[0].bet} ${betSymbol} ${Store.players[0].bet * 2}`
         }
-    }
+    }, { signal: controller.signal })
 
-    handlers.betUpP2 = () => {
+    // bet up p2
+    document.querySelector('#scene-bet .btn-B-p2').addEventListener('click', () => {
         if(!p2Ready) {
             if(Store.players[1].bet < Settings.SETTINGS.gameMaxBet) {
                 Store.players[1].bet += 1
             }
-
             playSound("./../../../assets/sounds/coin.mp3")
-
             betP2.textContent = `${Store.players[1].bet} ${betSymbol} ${Store.players[1].bet * 2}`
         }
-    }
+    }, { signal: controller.signal })
 
-    // bet down
-    handlers.betDownP1 = () => {
+    // bet down p1
+    document.querySelector('#scene-bet .btn-A-p1').addEventListener('click', () => {
         if(!p1Ready) {
             if(Store.players[0].bet > Settings.SETTINGS.gameMinBet) {
                 Store.players[0].bet -= 1
             }
-
             playSound("./../../../assets/sounds/coin.mp3")
-
             betP1.textContent = `${Store.players[0].bet} ${betSymbol} ${Store.players[0].bet * 2}`
         }
-    }
+    }, { signal: controller.signal })
 
-    handlers.betDownP2 = () => {
+    // bet down p2
+    document.querySelector('#scene-bet .btn-A-p2').addEventListener('click', () => {
         if(!p2Ready) {
             if(Store.players[1].bet > Settings.SETTINGS.gameMinBet) {
                 Store.players[1].bet -= 1
             }
-
             playSound("./../../../assets/sounds/coin.mp3")
-
             betP2.textContent = `${Store.players[1].bet} ${betSymbol} ${Store.players[1].bet * 2}`
         }
-    }
+    }, { signal: controller.signal })
 
-    // confirm
-    handlers.confirmP1 = () => {
+    // confirm p1
+    document.querySelector('#scene-bet .btn-select-p1').addEventListener('click', () => {
         if(!p1Ready) {
             p1Ready = true
-            if (p1Ready && p2Ready) EventBus.emit('scene:gamePlay');
-
-            Array.prototype.forEach.call(document.querySelector('#scene-bet .controller-p1').children, el => {
+            Array.prototype.forEach.call(controllerP1.children, el => {
                 el.classList.add('disabled')
             })
-
             playSound("./../../../assets/sounds/select.mp3")
+
+            if (p1Ready && p2Ready) EventBus.emit('scene:gamePlay')
         }
-    }
-    handlers.confirmP2 = () => {
+    }, { signal: controller.signal })
+
+    // confirm p2
+    document.querySelector('#scene-bet .btn-select-p2').addEventListener('click', () => {
         if(!p2Ready) {
             p2Ready = true
-            if (p1Ready && p2Ready) EventBus.emit('scene:gamePlay');
-
-            Array.prototype.forEach.call(document.querySelector('#scene-bet .controller-p2').children, el => {
+            Array.prototype.forEach.call(controllerP2.children, el => {
                 el.classList.add('disabled')
             })
-
             playSound("./../../../assets/sounds/select.mp3")
+
+            if (p1Ready && p2Ready) EventBus.emit('scene:gamePlay')
         }
-    }
-
-    // bet up
-    document.querySelector('#scene-bet .btn-B-p1').addEventListener('click', handlers.betUpP1)
-    document.querySelector('#scene-bet .btn-B-p2').addEventListener('click', handlers.betUpP2)
-
-    // bet down
-    document.querySelector('#scene-bet .btn-A-p1').addEventListener('click', handlers.betDownP1)
-    document.querySelector('#scene-bet .btn-A-p2').addEventListener('click', handlers.betDownP2)
-
-    // confirm
-    document.querySelector('#scene-bet .btn-select-p1').addEventListener('click', handlers.confirmP1)
-    document.querySelector('#scene-bet .btn-select-p2').addEventListener('click', handlers.confirmP2)
+    }, { signal: controller.signal })
 }
 
-
 export function onExit() {
+    controller.abort()
 
-    Array.prototype.forEach.call(document.querySelector('#scene-bet .controller-p1').children, el => {
+    Array.prototype.forEach.call(controllerP1.children, el => {
         el.classList.remove('disabled')
-    });
+    })
 
-    Array.prototype.forEach.call(document.querySelector('#scene-bet .controller-p2').children, el => {
+    Array.prototype.forEach.call(controllerP2.children, el => {
         el.classList.remove('disabled')
-    });
-
-    // bet up
-    document.querySelector('#scene-bet .btn-B-p1').removeEventListener('click', handlers.betUpP1)
-    document.querySelector('#scene-bet .btn-B-p2').removeEventListener('click', handlers.betUpP2)
-
-    // bet down
-    document.querySelector('#scene-bet .btn-A-p1').removeEventListener('click', handlers.betDownP1)
-    document.querySelector('#scene-bet .btn-A-p2').removeEventListener('click', handlers.betDownP2)
-
-    // confirm
-    document.querySelector('#scene-bet .btn-select-p1').removeEventListener('click', handlers.confirmP1)
-    document.querySelector('#scene-bet .btn-select-p2').removeEventListener('click', handlers.confirmP2);
-
+    })
 }
