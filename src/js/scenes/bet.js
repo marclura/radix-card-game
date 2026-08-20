@@ -21,18 +21,24 @@ const btnAP1 = document.querySelector('#scene-bet .btn-A-p1')
 const btnAP2 = document.querySelector('#scene-bet .btn-A-p2')
 const btnBP1 = document.querySelector('#scene-bet .btn-B-p1')
 const btnBP2 = document.querySelector('#scene-bet .btn-B-p2')
+const btnSelectP1 = document.querySelector('#scene-bet .btn-select-p1')
+const btnSelectP2 = document.querySelector('#scene-bet .btn-select-p2')
 
 function updateBetButtonsDisabledState() {
     const minBet = Settings.SETTINGS.gameMinBet
     const maxBet = Settings.SETTINGS.gameMaxBet
 
-    // bet down (-) disabled when at min
-    btnAP1.classList.toggle('disabled', Store.players[0].bet <= minBet)
-    btnAP2.classList.toggle('disabled', Store.players[1].bet <= minBet)
+    // bet down (-) disabled when at min OR player ready
+    btnAP1.classList.toggle('disabled', Store.players[0].bet <= minBet || p1Ready)
+    btnAP2.classList.toggle('disabled', Store.players[1].bet <= minBet || p2Ready)
 
-    // bet up (+) disabled when at max
-    btnBP1.classList.toggle('disabled', Store.players[0].bet >= maxBet)
-    btnBP2.classList.toggle('disabled', Store.players[1].bet >= maxBet)
+    // bet up (+) disabled when at max OR player ready
+    btnBP1.classList.toggle('disabled', Store.players[0].bet >= maxBet || p1Ready)
+    btnBP2.classList.toggle('disabled', Store.players[1].bet >= maxBet || p2Ready)
+
+    // select button disabled when player ready
+    btnSelectP1.classList.toggle('disabled', p1Ready)
+    btnSelectP2.classList.toggle('disabled', p2Ready)
 }
 
 export function onEnter() {
@@ -108,12 +114,10 @@ export function onEnter() {
     }, { signal: controller.signal })
 
     // confirm p1
-    document.querySelector('#scene-bet .btn-select-p1').addEventListener('click', () => {
+    btnSelectP1.addEventListener('click', () => {
         if(!p1Ready) {
             p1Ready = true
-            Array.prototype.forEach.call(controllerP1.children, el => {
-                el.classList.add('disabled')
-            })
+            updateBetButtonsDisabledState()
             playSound("./../../../assets/sounds/select.mp3")
 
             if (p1Ready && p2Ready) EventBus.emit('scene:gamePlay')
@@ -121,12 +125,10 @@ export function onEnter() {
     }, { signal: controller.signal })
 
     // confirm p2
-    document.querySelector('#scene-bet .btn-select-p2').addEventListener('click', () => {
+    btnSelectP2.addEventListener('click', () => {
         if(!p2Ready) {
             p2Ready = true
-            Array.prototype.forEach.call(controllerP2.children, el => {
-                el.classList.add('disabled')
-            })
+            updateBetButtonsDisabledState()
             playSound("./../../../assets/sounds/select.mp3")
 
             if (p1Ready && p2Ready) EventBus.emit('scene:gamePlay')
