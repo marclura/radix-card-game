@@ -5,7 +5,16 @@ import * as Settings from './../../../data/settings.js'
 import * as Characters from './../../../data/characters.js'
 import { generateCharacterCard, translateSkillKey, formatSeconds, playSound } from './../core/Utils.js'
 
+// ===== animation parameters (tweak here) =====
+const ANIM = {
+    cardRiseDuration: 500,      // ms - match $card-rise-duration in stylus
+    turnSwitchDelay: 1200,       // ms - fixed delay before next player's decks are reactivated
+    previousOffsetRange: 14,    // px range for random offset of previous cards
+    previousRotationRange: 8,   // deg range for random rotation of previous cards
+}
+
 let currentTurn = 0 // player 0 or 1
+let isProcessing = false // lock to prevent multiple clicks during turn switch delay
 let controller = null
 
 export const el = document.querySelector('#scene-game-play')
@@ -19,8 +28,7 @@ const characterP2 = document.querySelector('#scene-game-play #game-character-p2'
 const cardDecksP1 = document.querySelector('#scene-game-play #card-decks-p1')
 const cardDecksP2 = document.querySelector('#scene-game-play #card-decks-p2')
 
-const cardMessage = document.querySelector('#scene-game-play #card-message')
-const cardPoints = document.querySelector('#scene-game-play #card-points')
+const cardRevealStack = document.querySelector('#scene-game-play #card-reveal-stack')
 
 const gameTimeBar = document.querySelector('#scene-game-play #game-time-bar')
 
@@ -43,62 +51,106 @@ export function onEnter() {
     characterP1.append(generateCharacterCard(Store.players[0].character))
     characterP2.append(generateCharacterCard(Store.players[1].character))
 
+    // start with an empty stack
+    cardRevealStack.innerHTML = ''
+
     currentTurn = Math.round(Math.random())
+    isProcessing = false
     updateGUI()
+
+    // show initial "Inizia <character name>" as the first card in the stack
+    const starterName = Characters.CHARACTERS[Store.players[currentTurn].character].name
+    addDrawnCard(`Inizia ${starterName}`, null)
 
     controller = new AbortController()
 
     document.querySelector('#card-deck-1-p1').addEventListener('click', () => {
-        if(currentTurn === 0) {
-            drawCard(Store.players[0])
+        if(currentTurn === 0 && !isProcessing) {
+            isProcessing = true
+            lockCurrentPlayer()
+            const previousScore = drawCard(Store.players[0])
             updateSkillBars(0)
-            pointsP1.textContent = Store.players[0].score
+            animateScore(pointsP1, previousScore, Store.players[0].score)
             changeTurn()
+            setTimeout(() => {
+                updateGUI()
+                isProcessing = false
+            }, ANIM.turnSwitchDelay)
         }
     }, { signal: controller.signal })
 
     document.querySelector('#card-deck-2-p1').addEventListener('click', () => {
-        if(currentTurn === 0) {
-            drawCard(Store.players[0])
+        if(currentTurn === 0 && !isProcessing) {
+            isProcessing = true
+            lockCurrentPlayer()
+            const previousScore = drawCard(Store.players[0])
             updateSkillBars(0)
-            pointsP1.textContent = Store.players[0].score
+            animateScore(pointsP1, previousScore, Store.players[0].score)
             changeTurn()
+            setTimeout(() => {
+                updateGUI()
+                isProcessing = false
+            }, ANIM.turnSwitchDelay)
         }
     }, { signal: controller.signal })
 
     document.querySelector('#card-deck-3-p1').addEventListener('click', () => {
-        if(currentTurn === 0) {
-            drawCard(Store.players[0])
+        if(currentTurn === 0 && !isProcessing) {
+            isProcessing = true
+            lockCurrentPlayer()
+            const previousScore = drawCard(Store.players[0])
             updateSkillBars(0)
-            pointsP1.textContent = Store.players[0].score
+            animateScore(pointsP1, previousScore, Store.players[0].score)
             changeTurn()
+            setTimeout(() => {
+                updateGUI()
+                isProcessing = false
+            }, ANIM.turnSwitchDelay)
         }
     }, { signal: controller.signal })
 
     document.querySelector('#card-deck-1-p2').addEventListener('click', () => {
-        if(currentTurn === 1) {
-            drawCard(Store.players[1])
+        if(currentTurn === 1 && !isProcessing) {
+            isProcessing = true
+            lockCurrentPlayer()
+            const previousScore = drawCard(Store.players[1])
             updateSkillBars(1)
-            pointsP2.textContent = Store.players[1].score
+            animateScore(pointsP2, previousScore, Store.players[1].score)
             changeTurn()
+            setTimeout(() => {
+                updateGUI()
+                isProcessing = false
+            }, ANIM.turnSwitchDelay)
         }
     }, { signal: controller.signal })
 
     document.querySelector('#card-deck-2-p2').addEventListener('click', () => {
-        if(currentTurn === 1) {
-            drawCard(Store.players[1])
+        if(currentTurn === 1 && !isProcessing) {
+            isProcessing = true
+            lockCurrentPlayer()
+            const previousScore = drawCard(Store.players[1])
             updateSkillBars(1)
-            pointsP2.textContent = Store.players[1].score
+            animateScore(pointsP2, previousScore, Store.players[1].score)
             changeTurn()
+            setTimeout(() => {
+                updateGUI()
+                isProcessing = false
+            }, ANIM.turnSwitchDelay)
         }
     }, { signal: controller.signal })
 
     document.querySelector('#card-deck-3-p2').addEventListener('click', () => {
-        if(currentTurn === 1) {
-            drawCard(Store.players[1])
+        if(currentTurn === 1 && !isProcessing) {
+            isProcessing = true
+            lockCurrentPlayer()
+            const previousScore = drawCard(Store.players[1])
             updateSkillBars(1)
-            pointsP2.textContent = Store.players[1].score
+            animateScore(pointsP2, previousScore, Store.players[1].score)
             changeTurn()
+            setTimeout(() => {
+                updateGUI()
+                isProcessing = false
+            }, ANIM.turnSwitchDelay)
         }
     }, { signal: controller.signal })
 
@@ -117,13 +169,14 @@ function drawCard(player) {
     else if(card.type == 'special') playSound("./../../../assets/sounds/play-ok.mp3")
     else if(card.type == 'negative') playSound("./../../../assets/sounds/negative.mp3")
 
-    // card message
-    cardMessage.textContent = card.message
+    // card points label
+    const pointsLabel = (card.score > 0) ? `+${card.score}` : `${card.score}`
 
-    // card points
-    cardPoints.textContent = (card.score > 0) ? `+${card.score}` : card.score
+    // add drawn card with message + points (replaces visually the previous one)
+    addDrawnCard(card.message, pointsLabel)
 
     // score
+    const previousScore = player.score
     player.score += card.score
 
     // skills update
@@ -135,6 +188,66 @@ function drawCard(player) {
             if(_value < 0.0) _value = 0
             return [skill, _value]})
     )
+
+    return previousScore
+}
+
+// Create a new .drawn-card and append it to the stack.
+// Existing cards are never modified — only zIndex keeps stacking order.
+// All cards remain in the stack (cleanup happens in onExit).
+function addDrawnCard(message, pointsLabel) {
+    const cards = cardRevealStack.querySelectorAll('.drawn-card')
+
+    // existing cards stay untouched — only zIndex is updated to keep stacking order
+    cards.forEach((c, i) => {
+        c.style.zIndex = String(cards.length - i)
+    })
+
+    // create the new card on top with its own random position (assigned once)
+    const cardEl = document.createElement('div')
+    cardEl.classList.add('drawn-card')
+    cardEl.style.zIndex = String(cards.length + 1)
+
+    const px = (Math.random() - 0.5) * 2 * ANIM.previousOffsetRange
+    const py = (Math.random() - 0.5) * 2 * ANIM.previousOffsetRange
+    const pr = (Math.random() - 0.5) * 2 * ANIM.previousRotationRange
+    cardEl.style.setProperty('--px', `${px}px`)
+    cardEl.style.setProperty('--py', `${py}px`)
+    cardEl.style.setProperty('--pr', `${pr}deg`)
+
+    if (pointsLabel !== null && pointsLabel !== undefined) {
+        const pointsEl = document.createElement('div')
+        pointsEl.classList.add('drawn-card-points')
+        pointsEl.textContent = pointsLabel
+        cardEl.append(pointsEl)
+    }
+
+    const msgEl = document.createElement('div')
+    msgEl.classList.add('drawn-card-message')
+    msgEl.textContent = message
+    cardEl.append(msgEl)
+
+    cardRevealStack.append(cardEl)
+}
+
+// animate the score text incrementally from fromValue to toValue
+function animateScore(element, fromValue, toValue, duration = 600) {
+    const startTime = performance.now()
+
+    function update(now) {
+        const elapsed = now - startTime
+        const progress = Math.min(elapsed / duration, 1)
+        const current = Math.round(fromValue + (toValue - fromValue) * progress)
+        element.textContent = current
+
+        if (progress < 1) {
+            requestAnimationFrame(update)
+        } else {
+            element.textContent = toValue
+        }
+    }
+
+    requestAnimationFrame(update)
 }
 
 function updateSkillBars(id) {
@@ -163,9 +276,16 @@ function updateSkillBars(id) {
     })
 }
 
+// toggle the turn only (GUI is updated separately after turnSwitchDelay)
 function changeTurn() {
-    currentTurn = 1 - currentTurn   // toggle 1 to 0 and viceversa
-    updateGUI()
+    currentTurn = 1 - currentTurn   // toggle 1 to 0 and vice versa
+}
+
+// immediately disable the current player's decks visually during turn switch
+function lockCurrentPlayer() {
+    const currentSelector = currentTurn === 0 ? ".controller-p1" : ".controller-p2"
+    document.querySelector(`#scene-game-play ${currentSelector}`).classList.add('not-current-turn')
+    document.querySelectorAll(`#scene-game-play ${currentSelector} .card-deck`).forEach((el) => el.classList.add('disabled'))
 }
 
 function updateGUI() {
@@ -212,6 +332,9 @@ export function onExit() {
         timerInterval = null
     }
     gameTimeBar.style.width = '100%'
+
+    // clear all drawn cards so the scene starts clean on re-entry
+    cardRevealStack.innerHTML = ''
 
     controller.abort()
 }

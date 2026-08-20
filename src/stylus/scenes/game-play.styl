@@ -1,3 +1,10 @@
+// ===== animation/stack parameters (tweak here) =====
+$card-rise-duration = 0.5s
+$card-rise-easing = cubic-bezier(0.22, 1, 0.36, 1)
+$card-reveal-width = 10rem
+$card-points-font = 5rem
+$card-message-font = 1.4rem
+
 #scene-game-play
     header
         height: 3rem
@@ -12,31 +19,45 @@
                 margin-left: auto
                 border-radius: 1rem
                 min-width: 3rem
+
     #game-play-contianer
         display: flex
         justify-content: space-between
 
         #card-withdraw-container
             display: flex
-            flex-wrap: wrap
             justify-content: center
-            text-align: center
+            align-items: center
 
-            #card-message
-                width: 100%
-                font-size: 2rem
-
-            #card-reveal
-                width: 5rem
-                display: flex
-                justify-content: center
-                align-items: center
-                width: 10rem
+            #card-reveal-stack
+                position: relative
+                width: $card-reveal-width
+                aspect-ratio: 63 / 88
                 margin-top: 2rem
 
-                #card-points
-                    font-size: 5rem
+                .drawn-card
+                    @extends .card
+                    position: absolute
+                    inset: 0
+                    display: flex
+                    flex-direction: column
+                    justify-content: center
+                    align-items: center
+                    text-align: center
+                    background-color: $background
+                    // random offset/rotation assigned once at creation, stays fixed
+                    transform: translate(var(--px, 0), var(--py, 0)) rotate(var(--pr, 0deg))
+                    transform-origin: center bottom
+                    animation: cardRiseIn $card-rise-duration $card-rise-easing forwards
 
+                    .drawn-card-points
+                        font-size: $card-points-font
+                        line-height: 1
+
+                    .drawn-card-message
+                        font-size: $card-message-font
+                        margin-top: 0.5rem
+                        padding: 0 0.5rem
 
         .score-board
             width: 40%
@@ -47,14 +68,12 @@
             .character-card
                 display: inline-block
 
-
             .points
                 font-size: 8rem
 
                 for color, value in colorMap
                     &[data-color={color}]
                         color: value
-
 
     .controller
 
@@ -66,12 +85,12 @@
             .card-decks-container
                 margin-right: 0
                 margin-left: auto
-                
 
         &.not-current-turn
             // opacity: 0.3
             // background-color: #888
             pointer-events: none
+            padding-top: 4rem
 
             /*
             .card-decks-container
@@ -102,3 +121,9 @@
                         0.8
                     )
         */
+
+@keyframes cardRiseIn
+    from
+        top: 120%
+    to
+        top: 0

@@ -9,7 +9,7 @@ import * as winner from '../scenes/winner.js'
 // Transition timing parameters (ms)
 const TRANSITION_FADE_TO_WHITE_DURATION    = 800  // step 1 - overlay fade to white
 const TRANSITION_TEXT_DROP_DURATION        = 600  // step 2 - text drop-in animation
-const TRANSITION_TEXT_READ_DURATION        = 2400 // step 3 - time to read the text
+const TRANSITION_TEXT_READ_DURATION        = 2000 // step 3 - time to read the text
 const TRANSITION_TEXT_LEAVE_DURATION       = 600  // step 5 - text leave animation
 const TRANSITION_OVERLAY_FADE_OUT_DURATION = 800  // step 6 - overlay fade out
 
