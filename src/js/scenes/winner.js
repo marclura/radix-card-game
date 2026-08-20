@@ -41,7 +41,7 @@ export function onEnter() {
     btnRestartP1.addEventListener('click', () => {
         p1Ready = true
         btnRestartP1.classList.add('disabled')
-        playSound("./../../../assets/sounds/select.mp3")
+        playSound("assets/sounds/select.mp3")
 
         if (p1Ready && p2Ready) EventBus.emit('scene:welcome')
     }, { signal: controller.signal })
@@ -49,7 +49,7 @@ export function onEnter() {
     btnRestartP2.addEventListener('click', () => {
         p2Ready = true
         btnRestartP2.classList.add('disabled')
-        playSound("./../../../assets/sounds/select.mp3")
+        playSound("assets/sounds/select.mp3")
 
         if (p1Ready && p2Ready) EventBus.emit('scene:welcome')
     }, { signal: controller.signal })

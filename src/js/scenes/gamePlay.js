@@ -165,9 +165,9 @@ function drawCard(player) {
     const card = Cards.CARDS[randomId]
 
     // positive
-    if(card.type == 'positive') playSound("./../../../assets/sounds/play-positive.mp3")
-    else if(card.type == 'special') playSound("./../../../assets/sounds/play-ok.mp3")
-    else if(card.type == 'negative') playSound("./../../../assets/sounds/negative.mp3")
+    if(card.type == 'positive') playSound("assets/sounds/play-positive.mp3")
+    else if(card.type == 'special') playSound("assets/sounds/play-ok.mp3")
+    else if(card.type == 'negative') playSound("assets/sounds/negative.mp3")
 
     // card points label
     const pointsLabel = (card.score > 0) ? `+${card.score}` : `${card.score}`

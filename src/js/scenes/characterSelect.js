@@ -25,7 +25,7 @@ export function onEnter() {
         if(!p1Ready) {
             if (Store.players[0].character < Store.charactersCount - 1) Store.players[0].character++
             else Store.players[0].character = 0
-            playSound("./../../../assets/sounds/click.mp3")
+            playSound("assets/sounds/click.mp3")
             updateP1()
         }
     }, { signal: controller.signal })
@@ -34,7 +34,7 @@ export function onEnter() {
         if(!p1Ready) {
             if (Store.players[0].character > 0) Store.players[0].character--
             else Store.players[0].character = Store.charactersCount - 1
-            playSound("./../../../assets/sounds/click.mp3")
+            playSound("assets/sounds/click.mp3")
             updateP1()
         }
     }, { signal: controller.signal })
@@ -43,7 +43,7 @@ export function onEnter() {
         if(!p2Ready) {
             if (Store.players[1].character < Store.charactersCount - 1) Store.players[1].character++
             else Store.players[1].character = 0
-            playSound("./../../../assets/sounds/click.mp3")
+            playSound("assets/sounds/click.mp3")
             updateP2()
         }
     }, { signal: controller.signal })
@@ -52,7 +52,7 @@ export function onEnter() {
         if(!p2Ready) {
             if (Store.players[1].character > 0) Store.players[1].character--
             else Store.players[1].character = Store.charactersCount - 1
-            playSound("./../../../assets/sounds/click.mp3")
+            playSound("assets/sounds/click.mp3")
             updateP2()
         }
     }, { signal: controller.signal })
@@ -66,7 +66,7 @@ export function onEnter() {
                 el.classList.add('disabled')
             })
 
-            playSound("./../../../assets/sounds/select.mp3")
+            playSound("assets/sounds/select.mp3")
         }
 
         if (p1Ready && p2Ready) {
@@ -83,7 +83,7 @@ export function onEnter() {
                 el.classList.add('disabled')
             })
 
-            playSound("./../../../assets/sounds/select.mp3")
+            playSound("assets/sounds/select.mp3")
         }
 
         if (p1Ready && p2Ready) {

@@ -22,7 +22,7 @@ export function onEnter() {
         p1Ready = true
         btnStartP1.classList.add('disabled')
 
-        playSound("./../../../assets/sounds/select.mp3")
+        playSound("assets/sounds/select.mp3")
 
         if (p1Ready && p2Ready) EventBus.emit('scene:characterSelect')
     }, { signal: controller.signal })
@@ -31,7 +31,7 @@ export function onEnter() {
         p2Ready = true
         btnStartP2.classList.add('disabled')
 
-        playSound("./../../../assets/sounds/select.mp3")
+        playSound("assets/sounds/select.mp3")
 
         if (p1Ready && p2Ready) EventBus.emit('scene:characterSelect')
     }, { signal: controller.signal })
