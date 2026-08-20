@@ -57,9 +57,21 @@
 
 
     .controller
+
+        .card-decks-container
+            position: relative
+            top: -1rem
+
+        &.controller-p1
+            .card-decks-container
+                margin-right: 0
+                margin-left: auto
+                
+
         &.not-current-turn
-            opacity: 0.3
-            background-color: #888
+            // opacity: 0.3
+            // background-color: #888
+            pointer-events: none
 
             /*
             .card-decks-container

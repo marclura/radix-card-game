@@ -155,10 +155,14 @@ function updateGUI() {
     if(currentTurn === 1) {
         document.querySelector("#scene-game-play .controller-p1").classList.add('not-current-turn')
         document.querySelector("#scene-game-play .controller-p2").classList.remove('not-current-turn')
+        document.querySelectorAll("#scene-game-play .controller-p1 .card-deck").forEach((el) => el.classList.add('disabled'))
+        document.querySelectorAll("#scene-game-play .controller-p2 .card-deck").forEach((el) => el.classList.remove('disabled'))
     }
     else {
         document.querySelector("#scene-game-play .controller-p1").classList.remove('not-current-turn')
         document.querySelector("#scene-game-play .controller-p2").classList.add('not-current-turn')
+        document.querySelectorAll("#scene-game-play .controller-p1 .card-deck").forEach((el) => el.classList.remove('disabled'))
+        document.querySelectorAll("#scene-game-play .controller-p2 .card-deck").forEach((el) => el.classList.add('disabled'))
     } 
 }
 

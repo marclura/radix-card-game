@@ -1,3 +1,13 @@
+$anim-speed-active = 2s
+$anim-speed-confirm = 0.7s
+$anim-ease = ease-in-out
+
+@keyframes breathe-float
+    0%, 100%
+        transform: scale(1)
+    50%
+        transform: scale(1.06)
+
 button
     border: border-size solid $primary
     text-align: center
@@ -6,9 +16,11 @@ button
     border-radius: 50%
     width: 33%
     padding: 1rem
+    animation: breathe-float $anim-speed-active $anim-ease infinite
+
 
 .button.disabled
-    background-color: $disabled
+    background-color: $disabled-bg
     color: $background
     border-color: $disabled-dark
 
@@ -24,6 +36,7 @@ button
 button:active
     background-color: $primary
     color: $background
+    animation: breathe-float $anim-speed-confirm $anim-ease infinite
     .btn-icon
         stroke: $background
 
@@ -31,5 +44,8 @@ button.disabled
     border-color: $disabled-bg !important
     background-color: $disabled-bg !important
     color: $disabled-content !important
+    animation: none
+    pointer-events: none
     .btn-icon
         stroke: $disabled-content !important
+

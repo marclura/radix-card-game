@@ -1,4 +1,7 @@
-$card-stack-offset = -0.4rem
+$card-stack-offset = 0.35rem
+$card-stack-offset-disabled = 0.2rem
+$card-stack-offset-pick = 0
+$card-stack-count = 6
 
 .card-decks-container
     display: flex
@@ -25,7 +28,7 @@ $card-stack-offset = -0.4rem
 
     &:active
         position: relative
-        top: 1rem
+        top: - $card-stack-offset-pick
 
 .card-deck
     width: 20%
@@ -38,6 +41,10 @@ $card-stack-offset = -0.4rem
 
     &:active
         background-color: unset
+
+    &.disabled
+        .card
+            background-color: $disabled-bg !important
 
 .card-deck-card-stack
     @extends .card
@@ -60,27 +67,31 @@ $card-stack-offset = -0.4rem
 
 // card stack
 
-.card-stack-1
-    z-index: -1
-    top: $card-stack-offset
-    right: $card-stack-offset
+// Mixin: generates stack offsets for a given horizontal property
+card-stack-offsets(dir, offset = $card-stack-offset, offset-disabled = $card-stack-offset-disabled)
+    for i in 1..$card-stack-count
+        .card-stack-{i}
+            z-index: -1 * i
+            top: offset * i
+            {dir}: offset * i
 
-.card-stack-2
-    z-index: -2
-    top: $card-stack-offset * 2
-    right: $card-stack-offset  * 2
+// Mixin: disabled (collapsed) state
+card-stack-offsets-disabled(dir, offset-disabled = $card-stack-offset-disabled)
+    for i in 1..$card-stack-count
+        .card-stack-{i}
+            top: offset-disabled * i
+            {dir}: offset-disabled * i
 
-.card-stack-3
-    z-index: -3
-    top: $card-stack-offset * 3
-    right: $card-stack-offset * 3
+// --- Player 1 (left controller): stacks face RIGHT ---
+.controller-p1
+    card-stack-offsets(right)
 
-.card-stack-4
-    z-index: -4
-    top: $card-stack-offset * 4
-    right: $card-stack-offset * 4
+    .card-deck.disabled
+        card-stack-offsets-disabled(right)
 
-.card-stack-5
-    z-index: -5
-    top: $card-stack-offset * 5
-    right: $card-stack-offset * 5
+// --- Player 2 (right controller): stacks face LEFT (unchanged) ---
+.controller-p2
+    card-stack-offsets(left)
+
+    .card-deck.disabled
+        card-stack-offsets-disabled(left)

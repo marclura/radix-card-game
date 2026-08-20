@@ -14,6 +14,9 @@ const handlers = {  // list of event listeners
 
 export const el = document.querySelector('#scene-winner')
 
+const btnRestartP1 = document.querySelector('#scene-winner .btn-select-p1')
+const btnRestartP2 = document.querySelector('#scene-winner .btn-select-p2')
+
 const winnerMessage = document.querySelector('#scene-winner #winner-message')
 
 const characterP1 = document.querySelector('#scene-winner #game-character-p1')
@@ -41,10 +44,17 @@ export function onEnter() {
 
     handlers.confirmP1 = () => {
         p1Ready = true
+        btnRestartP1.classList.add('disabled')
+
+        playSound("./../../../assets/sounds/select.mp3")
+
         if (p1Ready && p2Ready) EventBus.emit('scene:welcome')
     }
     handlers.confirmP2 = () => {
         p2Ready = true
+        btnRestartP2.classList.add('disabled')
+
+        playSound("./../../../assets/sounds/select.mp3")
         if (p1Ready && p2Ready) EventBus.emit('scene:welcome')
     }
 
@@ -56,4 +66,6 @@ export function onEnter() {
 export function onExit() {
     document.querySelector('#scene-winner .btn-select-p1').removeEventListener('click', handlers.confirmP1)
     document.querySelector('#scene-winner .btn-select-p2').removeEventListener('click', handlers.confirmP2)
+    btnRestartP1.classList.remove('disabled')
+    btnRestartP2.classList.remove('disabled')
 }
