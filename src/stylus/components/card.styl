@@ -32,7 +32,6 @@ $card-stack-count = 6
 
 .card-deck
     width: 20%
-    background-size: 70%
     padding: 0
     @extends .card-aspect
     position: relative
@@ -46,8 +45,25 @@ $card-stack-count = 6
         .card
             background-color: $disabled-bg !important
             border-color: $disabled-content
+            &::after
+                background-color: $disabled-content
+
         .card-deck-card-stack
             border-color: $disabled-content
+
+// Mixin: render a flat SVG icon via CSS mask so its color can be changed
+// by overriding background-color (e.g. on .disabled state)
+card-icon-mask($svg)
+    content: ''
+    position: absolute
+    top: 50%
+    left: 50%
+    width: 70%
+    height: 70%
+    transform: translate(-50%, -50%)
+    background-color: $primary
+    -webkit-mask: url($svg) no-repeat center / contain
+    mask: url($svg) no-repeat center / contain
 
 .card-deck-card-stack
     @extends .card
@@ -58,16 +74,22 @@ $card-stack-count = 6
         position: absolute  // important else it gets in conflict with pos: relative
 
 .card-deck-1
-    background-image: url('../../assets/cards/card-icon-1.svg')
+    position: relative
     background-color: $card-red !important
+    &::after
+        card-icon-mask('../../assets/cards/card-icon-1.svg')
 
 .card-deck-2
-    background-image: url('../../assets/cards/card-icon-2.svg')
+    position: relative
     background-color: $card-silver !important
+    &::after
+        card-icon-mask('../../assets/cards/card-icon-2.svg')
 
 .card-deck-3
-    background-image: url('../../assets/cards/card-icon-3.svg')
+    position: relative
     background-color: $card-green !important
+    &::after
+        card-icon-mask('../../assets/cards/card-icon-3.svg')
 
 
 // card stack
