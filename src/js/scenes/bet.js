@@ -17,6 +17,24 @@ const controllerP2 = document.querySelector('#scene-bet .controller-p2')
 
 const betSymbol = ">"
 
+const btnAP1 = document.querySelector('#scene-bet .btn-A-p1')
+const btnAP2 = document.querySelector('#scene-bet .btn-A-p2')
+const btnBP1 = document.querySelector('#scene-bet .btn-B-p1')
+const btnBP2 = document.querySelector('#scene-bet .btn-B-p2')
+
+function updateBetButtonsDisabledState() {
+    const minBet = Settings.SETTINGS.gameMinBet
+    const maxBet = Settings.SETTINGS.gameMaxBet
+
+    // bet down (-) disabled when at min
+    btnAP1.classList.toggle('disabled', Store.players[0].bet <= minBet)
+    btnAP2.classList.toggle('disabled', Store.players[1].bet <= minBet)
+
+    // bet up (+) disabled when at max
+    btnBP1.classList.toggle('disabled', Store.players[0].bet >= maxBet)
+    btnBP2.classList.toggle('disabled', Store.players[1].bet >= maxBet)
+}
+
 export function onEnter() {
     p1Ready = false
     p2Ready = false
@@ -43,47 +61,49 @@ export function onEnter() {
     betP1.textContent = `${Store.players[0].bet} ${betSymbol} ${Store.players[0].bet * 2}`
     betP2.textContent = `${Store.players[1].bet} ${betSymbol} ${Store.players[1].bet * 2}`
 
+    updateBetButtonsDisabledState()
+
     // bet up p1
-    document.querySelector('#scene-bet .btn-B-p1').addEventListener('click', () => {
+    btnBP1.addEventListener('click', () => {
         if(!p1Ready) {
-            if(Store.players[0].bet < Settings.SETTINGS.gameMaxBet) {
-                Store.players[0].bet += 1
-            }
+            if(Store.players[0].bet >= Settings.SETTINGS.gameMaxBet) return
+            Store.players[0].bet += 1
             playSound("./../../../assets/sounds/coin.mp3")
             betP1.textContent = `${Store.players[0].bet} ${betSymbol} ${Store.players[0].bet * 2}`
+            updateBetButtonsDisabledState()
         }
     }, { signal: controller.signal })
 
     // bet up p2
-    document.querySelector('#scene-bet .btn-B-p2').addEventListener('click', () => {
+    btnBP2.addEventListener('click', () => {
         if(!p2Ready) {
-            if(Store.players[1].bet < Settings.SETTINGS.gameMaxBet) {
-                Store.players[1].bet += 1
-            }
+            if(Store.players[1].bet >= Settings.SETTINGS.gameMaxBet) return
+            Store.players[1].bet += 1
             playSound("./../../../assets/sounds/coin.mp3")
             betP2.textContent = `${Store.players[1].bet} ${betSymbol} ${Store.players[1].bet * 2}`
+            updateBetButtonsDisabledState()
         }
     }, { signal: controller.signal })
 
     // bet down p1
-    document.querySelector('#scene-bet .btn-A-p1').addEventListener('click', () => {
+    btnAP1.addEventListener('click', () => {
         if(!p1Ready) {
-            if(Store.players[0].bet > Settings.SETTINGS.gameMinBet) {
-                Store.players[0].bet -= 1
-            }
-            playSound("./../../../assets/sounds/coin.mp3")
+            if(Store.players[0].bet <= Settings.SETTINGS.gameMinBet) return
+            Store.players[0].bet -= 1
+            playSound("./../../../assets/sounds/grab-coin.mp3")
             betP1.textContent = `${Store.players[0].bet} ${betSymbol} ${Store.players[0].bet * 2}`
+            updateBetButtonsDisabledState()
         }
     }, { signal: controller.signal })
 
     // bet down p2
-    document.querySelector('#scene-bet .btn-A-p2').addEventListener('click', () => {
+    btnAP2.addEventListener('click', () => {
         if(!p2Ready) {
-            if(Store.players[1].bet > Settings.SETTINGS.gameMinBet) {
-                Store.players[1].bet -= 1
-            }
-            playSound("./../../../assets/sounds/coin.mp3")
+            if(Store.players[1].bet <= Settings.SETTINGS.gameMinBet) return
+            Store.players[1].bet -= 1
+            playSound("./../../../assets/sounds/grab-coin.mp3")
             betP2.textContent = `${Store.players[1].bet} ${betSymbol} ${Store.players[1].bet * 2}`
+            updateBetButtonsDisabledState()
         }
     }, { signal: controller.signal })
 
