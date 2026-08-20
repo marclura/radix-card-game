@@ -6,4 +6,4 @@ populateCharacters()
 
 // welcome, characterSelect, bet, gamePlay, winner
 
-SceneManager.goToScene('gamePlay', false) // no title on first load
+SceneManager.goToScene('welcome', false) // no title on first load
