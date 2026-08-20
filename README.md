@@ -1,69 +1,69 @@
 # radix-card-game
 
-Card game locale per 2 giocatori su unico schermo. Ogni giocatore usa il proprio controller (P1 a sinistra, P2 a destra) per scegliere un personaggio, puntare fiches e pescare carte fino allo scadere del tempo.
+Local 2-player card game on a single screen. Each player uses their own controller (P1 on the left, P2 on the right) to pick a character, place a bet, and draw cards until time runs out.
 
 **Demo:** https://marclura.github.io/radix-card-game/
 
-## Regole
+## Rules
 
-- **Obiettivo:** ottenere il punteggio più alto entro il tempo limite (90 secondi).
-- **Punteggio:** si parte da 100 punti. Le carte positive aggiungono punti (+5/+10/+15/+20), quelle negative li sottraggono (−5/−10/−15/−20), quelle speciali danno 0 punti ma modificano le abilità.
-- **Puntata:** da 2 a 12 fiches. Il vincitore riceve il doppio della propria puntata in gettoni.
-- **Personaggi:** 6 squadre, ognuna con 4 abilità (forza, disciplina, strategia, fortuna) che evolvono durante la partita in base alle carte pescate.
-- **Turni:** i giocatori pescano a turno da uno dei 3 mazzi del proprio controller.
+- **Goal:** achieve the highest score within the time limit (90 seconds).
+- **Score:** players start at 100 points. Positive cards add points (+5/+10/+15/+20), negative cards subtract them (−5/−10/−15/−20), and special cards give 0 points but modify skills.
+- **Bet:** from 2 to 12 chips. The winner receives double their bet in tokens.
+- **Characters:** 6 teams, each with 4 skills (strength, discipline, strategy, luck) that evolve during the match based on the cards drawn.
+- **Turns:** players take turns drawing from one of the 3 decks on their controller.
 
-## Fasi di gioco
+## Game Phases
 
-1. **Welcome** — Entrambi i giocatori premono "Inizia" per cominciare una nuova partita.
-2. **Character Select** — Ogni giocatore sfoglia e sceglie un personaggio dalla lista condivisa.
-3. **Bet** — I giocatori impostano la propria puntata (2–12) e confermano.
-4. **Game Play** — A turni si pesca dal mazzo: le carte rivelano punti e messaggi, il punteggio e le abilità si aggiornano in tempo reale. Un timer countdown chiude la fase.
-5. **Winner** — Chi ha il punteggio più alto vince e guadagna il doppio della puntata in gettoni; pareggio possibile. Da qui si ricomincia.
+1. **Welcome** — Both players press "Start" to begin a new match.
+2. **Character Select** — Each player browses and picks a character from the shared roster.
+3. **Bet** — Players set their bet (2–12) and confirm.
+4. **Game Play** — Players take turns drawing from the deck: cards reveal points and messages, while score and skills update in real time. A countdown timer ends the phase.
+5. **Winner** — The player with the highest score wins and earns double their bet in tokens; ties are possible. From here the game restarts.
 
-## Architettura JavaScript
+## JavaScript Architecture
 
-L'app è un modulo ES6 vanilla (nessun framework) avviato da `src/js/main.js`, che popola i personaggi nel DOM e avvia la prima scena via `SceneManager`.
+The app is a vanilla ES6 module (no framework) bootstrapped from `src/js/main.js`, which populates characters into the DOM and launches the first scene via `SceneManager`.
 
 ### Core (`src/js/core/`)
 
-- **`EventBus.js`** — sistema pub/sub disaccoppiato. Le scene emettono eventi `scene:*` (es. `scene:bet`, `scene:gamePlay`) per richiedere il cambio scena.
-- **`SceneManager.js`** — gestisce il ciclo di vita delle scene. Sottoscrive gli eventi `scene:*`, esegue una transizione animata (fade overlay + titolo di fase), chiama `onExit()` della scena corrente e `onEnter()` della nuova. Ogni scena espone `el`, `onEnter()`, `onExit()`.
-- **`Store.js`** — stato globale singleton con `players[]` (personaggio, punteggio, abilità, puntata) e `charactersCount`. `resetStore()` riporta i valori ai default.
-- **`Utils.js`** — helper condivisi: `populateCharacters()` (genera thumbnail e card dei personaggi nel DOM), `generateCharacterCard()`, `translateSkillKey()`, `formatSeconds()`, `playSound()` (audio cached).
+- **`EventBus.js`** — decoupled pub/sub system. Scenes emit `scene:*` events (e.g. `scene:bet`, `scene:gamePlay`) to request scene changes.
+- **`SceneManager.js`** — manages the scene lifecycle. Subscribes to `scene:*` events, runs an animated transition (fade overlay + phase title), calls `onExit()` on the current scene and `onEnter()` on the new one. Each scene exposes `el`, `onEnter()`, `onExit()`.
+- **`Store.js`** — global state singleton holding `players[]` (character, score, skills, bet) and `charactersCount`. `resetStore()` resets values to defaults.
+- **`Utils.js`** — shared helpers: `populateCharacters()` (generates thumbnails and character cards in the DOM), `generateCharacterCard()`, `translateSkillKey()`, `formatSeconds()`, `playSound()` (cached audio).
 
-### Scene (`src/js/scenes/`)
+### Scenes (`src/js/scenes/`)
 
-Ogni scena è un modulo con `el`, `onEnter()`, `onExit()`. Gli event listener vengono registrati con `AbortController` e rimossi pulitamente in `onExit()`.
+Each scene is a module with `el`, `onEnter()`, `onExit()`. Event listeners are registered with `AbortController` and cleanly removed in `onExit()`.
 
-- **`welcome.js`** — reset dello Store, entrambi i giocatori devono premere "Inizia".
-- **`characterSelect.js`** — navigazione personaggi (btn A/B su/giù), conferma con "select"; al conferimento le abilità del personaggio vengono copiate nel `Store`.
-- **`bet.js`** — incremento/decremento puntata con vincoli min/max, stato "ready" per giocatore; quando entrambi sono pronti emette `scene:gamePlay`.
-- **`gamePlay.js`** — cuore del gameplay: timer countdown, turni alternati, pesca carta casuale dal `CARDS` array, aggiornamento punteggio (con animazione `requestAnimationFrame`) e barre abilità, stack visivo delle carte rivelate. A tempo scaduto emette `scene:winner`.
-- **`winner.js`** — confronta i punteggi, mostra il messaggio vincitore/pareggio, permette il restart emettendo `scene:welcome`.
+- **`welcome.js`** — resets the Store; both players must press "Start".
+- **`characterSelect.js`** — character navigation (btn A/B up/down), confirm with "select"; on confirm the character's skills are copied into the `Store`.
+- **`bet.js`** — increment/decrement bet with min/max constraints, per-player "ready" state; when both are ready it emits `scene:gamePlay`.
+- **`gamePlay.js`** — core gameplay: countdown timer, alternating turns, random card draw from the `CARDS` array, score update (with `requestAnimationFrame` animation) and skill bars, visual stack of revealed cards. When time expires it emits `scene:winner`.
+- **`winner.js`** — compares scores, displays winner/tie message, allows restart by emitting `scene:welcome`.
 
-### Dati (`data/`)
+### Data (`data/`)
 
-- **`cards.js`** — array `CARDS`: carte positive, negative e speciali, ognuna con `score`, `skills` (delta su forza/disciplina/strategia/fortuna), `message` e `type`.
-- **`characters.js`** — array `CHARACTERS`: 6 personaggi con `name`, `color` e `skills` base.
-- **`scenes.js`** — `SCENE_TITLES`: titoli mostrati durante le transizioni.
+- **`cards.js`** — `CARDS` array: positive, negative, and special cards, each with `score`, `skills` (delta on strength/discipline/strategy/luck), `message`, and `type`.
+- **`characters.js`** — `CHARACTERS` array: 6 characters with `name`, `color`, and base `skills`.
+- **`scenes.js`** — `SCENE_TITLES`: titles shown during scene transitions.
 - **`settings.js`** — `SETTINGS`: `gameMaxPoints`, `gameMinPoints`, `gameMaxBet`, `gameMinBet`, `gamePlayDuration` (90s).
 
-### Flusso
+### Flow
 
 ```
 main.js → populateCharacters() → SceneManager.goToScene('welcome')
                                               ↓
-        EventBus.on('scene:*') ← scene emettono eventi ← Store (stato condiviso)
+        EventBus.on('scene:*') ← scenes emit events ← Store (shared state)
                                               ↓
-        SceneManager: fade overlay → onExit() vecchia → onEnter() nuova → fade out
+        SceneManager: fade overlay → onExit() old → onEnter() new → fade out
 ```
 
 ## Build / Dev
 
-Stili scritti in Stylus, compilati con Gulp:
+Styles are written in Stylus and compiled with Gulp:
 
 ```
 npx gulp
 ```
 
-Compila `src/stylus/main.styl` → `src/css/main.css` con sourcemaps e resta in watch. Il JS viene servito direttamente come modulo ES6 da `index.html`.
+Compiles `src/stylus/main.styl` → `src/css/main.css` with sourcemaps and stays in watch mode. JS is served directly as ES6 modules from `index.html`.
