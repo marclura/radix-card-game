@@ -15,6 +15,7 @@ const ANIM = {
 
 let currentTurn = 0 // player 0 or 1
 let isProcessing = false // lock to prevent multiple clicks during turn switch delay
+let gameEnded = false // set to true when the countdown reaches 0
 let controller = null
 
 export const el = document.querySelector('#scene-game-play')
@@ -56,6 +57,7 @@ export function onEnter() {
 
     currentTurn = Math.round(Math.random())
     isProcessing = false
+    gameEnded = false
     updateGUI()
 
     // show initial "Inizia <character name>" as the first card in the stack
@@ -65,7 +67,7 @@ export function onEnter() {
     controller = new AbortController()
 
     document.querySelector('#card-deck-1-p1').addEventListener('click', () => {
-        if(currentTurn === 0 && !isProcessing) {
+        if(currentTurn === 0 && !isProcessing && !gameEnded) {
             isProcessing = true
             lockCurrentPlayer()
             const previousScore = drawCard(Store.players[0])
@@ -80,7 +82,7 @@ export function onEnter() {
     }, { signal: controller.signal })
 
     document.querySelector('#card-deck-2-p1').addEventListener('click', () => {
-        if(currentTurn === 0 && !isProcessing) {
+        if(currentTurn === 0 && !isProcessing && !gameEnded) {
             isProcessing = true
             lockCurrentPlayer()
             const previousScore = drawCard(Store.players[0])
@@ -95,7 +97,7 @@ export function onEnter() {
     }, { signal: controller.signal })
 
     document.querySelector('#card-deck-3-p1').addEventListener('click', () => {
-        if(currentTurn === 0 && !isProcessing) {
+        if(currentTurn === 0 && !isProcessing && !gameEnded) {
             isProcessing = true
             lockCurrentPlayer()
             const previousScore = drawCard(Store.players[0])
@@ -110,7 +112,7 @@ export function onEnter() {
     }, { signal: controller.signal })
 
     document.querySelector('#card-deck-1-p2').addEventListener('click', () => {
-        if(currentTurn === 1 && !isProcessing) {
+        if(currentTurn === 1 && !isProcessing && !gameEnded) {
             isProcessing = true
             lockCurrentPlayer()
             const previousScore = drawCard(Store.players[1])
@@ -125,7 +127,7 @@ export function onEnter() {
     }, { signal: controller.signal })
 
     document.querySelector('#card-deck-2-p2').addEventListener('click', () => {
-        if(currentTurn === 1 && !isProcessing) {
+        if(currentTurn === 1 && !isProcessing && !gameEnded) {
             isProcessing = true
             lockCurrentPlayer()
             const previousScore = drawCard(Store.players[1])
@@ -140,7 +142,7 @@ export function onEnter() {
     }, { signal: controller.signal })
 
     document.querySelector('#card-deck-3-p2').addEventListener('click', () => {
-        if(currentTurn === 1 && !isProcessing) {
+        if(currentTurn === 1 && !isProcessing && !gameEnded) {
             isProcessing = true
             lockCurrentPlayer()
             const previousScore = drawCard(Store.players[1])
@@ -289,6 +291,9 @@ function lockCurrentPlayer() {
 }
 
 function updateGUI() {
+    // once the game has ended, never re-enable the decks
+    if(gameEnded) return
+
     if(currentTurn === 1) {
         document.querySelector("#scene-game-play .controller-p1").classList.add('not-current-turn')
         document.querySelector("#scene-game-play .controller-p2").classList.remove('not-current-turn')
@@ -316,9 +321,22 @@ function startTimer(callback) {
 
         gameTimeBar.textContent = formatSeconds(remaining)
 
+        // countdown tick during the last 10 seconds
+        if(remaining <= 10 && remaining >= 1) {
+            playSound('assets/sounds/countdown-tick.mp3')
+        }
+
         if(remaining <= 0) {
             clearInterval(timerInterval)
             timerInterval = null
+
+            // time is up: gong + lock both players' card decks
+            playSound('assets/sounds/gong.mp3')
+            gameEnded = true
+            document.querySelector("#scene-game-play .controller-p1").classList.add('not-current-turn')
+            document.querySelector("#scene-game-play .controller-p2").classList.add('not-current-turn')
+            document.querySelectorAll("#scene-game-play .card-deck").forEach((el) => el.classList.add('disabled'))
+
             callback()
         }
     }, 1000)
