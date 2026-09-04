@@ -1,8 +1,53 @@
 #scene-winner
-    #winner-message
-        width 100%
-        text-align: center
+    #winner-container
+        display: flex
+        justify-content: space-between
+        align-items: center
+        padding-top: 3rem
+        padding-left: 1rem
+        padding-right: 1rem
+
+        .winner-board
+            width: 40%
+            display: flex
+            align-items: center
+
+            margin-card-values = 4rem
+
+            &#winner-board-p1
+                justify-content: flex-start
+
+                #winner-character-p1
+                    margin-right: margin-card-values
+
+            &#winner-board-p2
+                justify-content: flex-end   
+
+                #winner-character-p2
+                    margin-left: margin-card-values 
+
+            .character-card
+                display: inline-block
+            
+            .winner-values
+                display: flex
+                flex-direction: column
+                justify-content:  center
+                text-align: center
+
+                .winner-board-values
+                    font-size: 3rem
+
+                .winner-board-labels
+                    font-size: 1.5rem
+
+        #winner-center
+            text-align: center
+
     .controller
         display: flex
         justify-content: center
         align-items: center
+
+        .is-hidden
+            display: none

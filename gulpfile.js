@@ -14,6 +14,7 @@ function watch() {
     gulp.watch('src/stylus/**/*.styl', css)
 }
 
+exports.css = css
 exports.default = gulp.series(css, watch)
 
-// run it with 'npx gulp'
+// run it with 'npx gulp' (or 'npx gulp css' for a one-shot build)

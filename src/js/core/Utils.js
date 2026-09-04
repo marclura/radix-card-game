@@ -124,7 +124,24 @@ export function formatSeconds(seconds) {
 // play audio file
 const audioCache = new Map() // cache the audio, check if not already loaded
 
+// browsers block Audio.play() until the user has interacted with the page
+// (autoplay policy). Track the first interaction and skip sounds played
+// before it instead of letting them fail with a NotAllowedError.
+let audioUnlocked = false
+
+function unlockAudio() {
+    audioUnlocked = true
+    document.removeEventListener('pointerdown', unlockAudio)
+    document.removeEventListener('keydown', unlockAudio)
+    document.removeEventListener('touchstart', unlockAudio)
+}
+
+document.addEventListener('pointerdown', unlockAudio, { once: true })
+document.addEventListener('keydown', unlockAudio, { once: true })
+document.addEventListener('touchstart', unlockAudio, { once: true })
+
 export function playSound(filePath) {
+    if (!audioUnlocked) return
     let audio = audioCache.get(filePath)    
     if (!audio) {
         audio = new Audio(filePath)
@@ -132,4 +149,18 @@ export function playSound(filePath) {
     }
     audio.currentTime = 0
     audio.play().catch(e => console.error("Audio error:", e));
+}
+
+// play audio file allowing rapid overlapping plays (e.g. count down/up ticks)
+// clones the cached audio node so each tick plays independently instead of
+// restarting (and cutting off) the previous one
+export function playTickSound(filePath) {
+    if (!audioUnlocked) return
+    let audio = audioCache.get(filePath)
+    if (!audio) {
+        audio = new Audio(filePath)
+        audioCache.set(filePath, audio)
+    }
+    const tick = audio.cloneNode()
+    tick.play().catch(e => console.error("Audio error:", e));
 }

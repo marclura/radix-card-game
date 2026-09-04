@@ -265,25 +265,47 @@
     <div id="scene-winner" class="scene"">
 
         <div class="game-screen">
-            <header>
-                <p class="h1">Winner</p>
-            </header>
             <section>
-                <div id="winner-message"></div>
-                <div id="score-board-p1" class="score-board">
-                    <div id="game-character-p1"></div>
-                    <div id="points-p1" class="points"></div>
+                <div id="winner-container">
+                    <!-- P1 board: character card -->
+                    <div id="winner-board-p1" class="winner-board">
+                        <div id="winner-character-p1"></div>
+                        <div class="winner-values">
+                            <div id="winner-bet-p1" class="winner-board-values"></div>
+                            <div class="winner-board-labels">fishes</div>
+                            <span id="final-score-p1" class="winner-board-values"></span>
+                            <div class="winner-board-labels">punti</div>
+                        </div>
+                    </div>
+
+                    <!-- Central message -->
+                    <div id="winner-center">
+                        <p>Il gioco è terminato</p>
+                        <p>Ritira le fishes al banco centrale</p>
+                    </div>
+
+
+                    <!-- P2 board: character card -->
+                    <div id="winner-board-p2" class="winner-board">
+                        <div class="winner-values">
+                            <div id="winner-bet-p2" class="winner-board-values"></div>
+                            <div class="winner-board-labels">fishes</div>
+                            <span id="final-score-p2" class="winner-board-values"></span>
+                            <div class="winner-board-labels">punti</div>
+                        </div>
+                        <div id="winner-character-p2" class="character-card-right"></div>
+                    </div>
                 </div>
             </section>
         </div>
 
         <div class="controller-container">
             <div class="controller controller-p1">
-                <button class="btn-select btn-select-p1">Ricomincia</button>
+                <button class="btn-select btn-select-p1 is-hidden">Ricomincia</button>
             </div>
 
             <div class="controller controller-p2">
-                <button class="btn-select btn-select-p2">Ricomincia</button>
+                <button class="btn-select btn-select-p2 is-hidden">Ricomincia</button>
             </div>
         </div>
     </div>
