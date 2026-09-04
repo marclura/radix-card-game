@@ -131,7 +131,7 @@ function drawCard(player) {
     let playback
     if(card.type == 'positive') playback = playSound("assets/sounds/play-positive.mp3")
     else if(card.type == 'special') playback = playSound("assets/sounds/play-ok.mp3")
-    else if(card.type == 'negative') playback = playSound("assets/sounds/negative.mp3")
+    else if(card.type == 'negative') playback = playSound("assets/sounds/play-negative.mp3")
     else playback = Promise.resolve(false) // unknown card type: no sound
 
     // card points label
