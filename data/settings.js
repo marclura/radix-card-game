@@ -4,6 +4,6 @@ export const SETTINGS = {
     gameMinPoints: 0,
     gameMaxBet: 12,
     gameMinBet: 2,
-    gamePlayDuration: 15,  // in seconds (TEMP for testing)
+    gamePlayDuration: 30,  // in seconds (TEMP for testing)
     gameOverlayTransitionTextDuration: 1.5  // in seconds
 }

@@ -153,10 +153,12 @@ export function onEnter() {
     betP2.dataset.color = Characters.CHARACTERS[p2.character].color
 
     // clear any previously appended character cards to avoid duplicates on re-entry
+    // the cards are generated with the end-of-game skill values from the Store
+    // (updated on every card draw during gamePlay), not the character defaults
     characterP1.innerHTML = ''
     characterP2.innerHTML = ''
-    characterP1.append(generateCharacterCard(p1.character))
-    characterP2.append(generateCharacterCard(p2.character))
+    characterP1.append(generateCharacterCard(p1.character, p1.skills))
+    characterP2.append(generateCharacterCard(p2.character, p2.skills))
 
     // hide the boards (they slide in from the bottom during the sequence)
     boards.forEach(board => board.classList.add('is-offscreen'))

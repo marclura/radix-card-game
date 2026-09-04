@@ -43,7 +43,9 @@ export function populateCharacters() {
 }
 
 // generate character card
-export function generateCharacterCard(index) {
+// skills: optional skill values used to render the bars (e.g. the end-of-game
+// values from the Store). Falls back to the character defaults when omitted.
+export function generateCharacterCard(index, skills = null) {
     const el = Characters.CHARACTERS[index]
     // character card
     const card = document.createElement('div')
@@ -59,7 +61,9 @@ export function generateCharacterCard(index) {
     const skillList = document.createElement('ul')
     skillList.classList.add('character-skill-list')
 
-    Object.entries(el.skills).forEach(([skill, value]) => {
+    const skillSource = skills ?? el.skills
+
+    Object.entries(skillSource).forEach(([skill, value]) => {
         const skillLi = document.createElement('li')
         //const skillBarContainer = document.createElement('div')
         const skillBar = document.createElement('div')
