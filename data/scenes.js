@@ -3,6 +3,6 @@ export const SCENE_TITLES = {
     characterSelect: "Scegli la tua squadra vincente!",
     bet: "Fate la vostra puntata!",
     gamePlay: "Che la partita abbia inizio!",
-    winner: "Il gioco è terminato! Il vincitore è ...",
+    winner: "E la vittorià va a ...",
     welcome: "Nuova partita!"
 }

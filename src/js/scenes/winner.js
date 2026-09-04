@@ -6,20 +6,18 @@ import { playSound, playTickSound } from './../core/Audio.js'
 
 // ===== animation parameters (tweak here) =====
 const ANIM = {
-    soundDelay: 1000,          // ms - delay before the winner sound starts
-    boardSlideDuration: 800,  // ms - winner-board slide-in from the bottom duration
-    boardSlideDelay: 400,     // ms - pause after a board lands, before its values animate
-    scoreDuration: 1500,      // ms - score count up duration
-    fichesDelay: 1000,        // ms - pause after the score, before the fiches animation
+    soundDelay: 600,          // ms - delay before the winner sound starts
+    boardSlideDuration: 1200,  // ms - winner-board slide-in from the bottom duration
+    boardSlideDelay: 800,     // ms - pause after a board lands, before its values animate
+    fichesDelay: 1000,        // ms - pause after the board lands, before the fiches animation
     fichesDuration: 1500,     // ms - fiches count up/down duration
-    centerMessageDelay: 800,  // ms - pause before the central message appears
+    centerMessageDelay: 1800,  // ms - pause before the central message appears
 }
 
-// central message lines (editable from JS - shown when the sequence reaches the message step)
-const CENTER_MESSAGE = [
-    'Il gioco è terminato',
-    'Ritira le fishes al banco centrale',
-]
+// central messages (editable from JS - shown at different steps of the sequence)
+const MSG_WINNER = 'Vinci il doppio delle fishes puntate!'   // shown when the winner board is in position
+const MSG_LOSER = 'Hai perso tutto!'                // shown when the loser board is in position
+const MSG_END = 'Il gioco è terminato!'  // shown with the restart buttons
 
 let p1Ready = false
 let p2Ready = false
@@ -55,7 +53,6 @@ el.style.setProperty('--board-slide-duration', `${ANIM.boardSlideDuration}ms`)
 
 // per-player element bundles (index matches the player index)
 const boards = [boardP1, boardP2]
-const scores = [finalScoreP1, finalScoreP2]
 const bets = [betP1, betP2]
 
 // wait ms, but cancellable on scene exit
@@ -122,6 +119,11 @@ function showCenter() {
     centerMessage.classList.add('is-visible')
 }
 
+// hide the central message (fades out via the CSS opacity transition)
+function hideCenter() {
+    centerMessage.classList.remove('is-visible')
+}
+
 // reveal the restart buttons
 function revealButtons() {
     btnRestartP1.classList.remove('is-hidden')
@@ -159,9 +161,9 @@ export function onEnter() {
     // hide the boards (they slide in from the bottom during the sequence)
     boards.forEach(board => board.classList.add('is-offscreen'))
 
-    // hide the central message and prepare its content from JS
+    // hide the central message (each step of the sequence sets its own content)
     centerMessage.classList.remove('is-visible')
-    setCenterMessage(CENTER_MESSAGE)
+    setCenterMessage([])
 
     // hide the restart buttons until the animations are done
     btnRestartP1.classList.add('is-hidden')
@@ -175,16 +177,17 @@ export function onEnter() {
         winner = 1
     }
 
-    // initial values
-    finalScoreP1.textContent = 0
-    finalScoreP2.textContent = 0
+    // initial values (the final score is displayed directly, no count-up)
+    finalScoreP1.textContent = p1.score
+    finalScoreP2.textContent = p2.score
     betP1.textContent = p1.bet
     betP2.textContent = p2.bet
 
     // ===== animation sequence =====
-    // 1. sound delay -> 2. winner board slides in -> 3. winner score + fiches
-    // -> 4. loser board slides in -> 5. loser score + fiches
-    // -> 6. central message -> 7. reveal buttons
+    // 1. sound delay -> 2. winner board slides in (+ winner message)
+    // -> 3. winner fiches -> 4. loser board slides in (message hidden)
+    // -> 5. loser fiches (+ loser message)
+    // -> 6. end message -> 7. reveal buttons
     ;(async () => {
         // 1. small delay before the winner sound starts
         await wait(ANIM.soundDelay)
@@ -192,15 +195,11 @@ export function onEnter() {
         playSound("assets/sounds/winner.mp3")
 
         if (winner === -1) {
-            // tie: both boards slide in and count the score, no fiches animation
+            // tie: both boards slide in (score already displayed), no fiches animation
             for (const i of [0, 1]) {
                 // board slides in from the bottom
                 showBoard(boards[i])
                 await wait(ANIM.boardSlideDuration + ANIM.boardSlideDelay)
-                if (token !== entryToken) return
-
-                // score count up
-                await animateValue(scores[i], 0, Store.players[i].score, ANIM.scoreDuration)
                 if (token !== entryToken) return
             }
         } else {
@@ -212,37 +211,42 @@ export function onEnter() {
             await wait(ANIM.boardSlideDuration + ANIM.boardSlideDelay)
             if (token !== entryToken) return
 
-            // 3a. winner score count up
-            await animateValue(scores[w], 0, Store.players[w].score, ANIM.scoreDuration)
-            if (token !== entryToken) return
+            // winner message appears once the winner board is in position
+            setCenterMessage([MSG_WINNER])
+            showCenter()
 
             await wait(ANIM.fichesDelay)
             if (token !== entryToken) return
 
-            // 3b. winner fiches count up (doubled)
+            // 3. winner fiches count up (doubled)
             await animateValue(bets[w], Store.players[w].bet, Store.players[w].bet * 2, ANIM.fichesDuration, 'assets/sounds/coin.mp3')
             if (token !== entryToken) return
 
-            // 4. loser board slides in from the bottom
+            // 4. the message disappears, then the loser board slides in from the bottom
+            hideCenter()
+            await wait(ANIM.centerMessageDelay)
+            if (token !== entryToken) return
+
             showBoard(boards[l])
             await wait(ANIM.boardSlideDuration + ANIM.boardSlideDelay)
             if (token !== entryToken) return
 
-            // 5a. loser score count up
-            await animateValue(scores[l], 0, Store.players[l].score, ANIM.scoreDuration)
-            if (token !== entryToken) return
+            // loser message appears once the loser board is in position
+            setCenterMessage([MSG_LOSER])
+            showCenter()
 
             await wait(ANIM.fichesDelay)
             if (token !== entryToken) return
 
-            // 5b. loser fiches count down to 0
+            // 5. loser fiches count down to 0
             await animateValue(bets[l], Store.players[l].bet, 0, ANIM.fichesDuration, 'assets/sounds/grab-coin.mp3')
             if (token !== entryToken) return
         }
 
-        // 6. central message appears
+        // 6. end message appears
         await wait(ANIM.centerMessageDelay)
         if (token !== entryToken) return
+        setCenterMessage([MSG_END])
         showCenter()
 
         // 7. reveal the restart buttons
@@ -279,6 +283,7 @@ export function onExit() {
     // reset the boards and the central message for a clean re-entry
     boards.forEach(board => board.classList.add('is-offscreen'))
     centerMessage.classList.remove('is-visible')
+    setCenterMessage([])
 
     btnRestartP1.classList.remove('disabled')
     btnRestartP2.classList.remove('disabled')
