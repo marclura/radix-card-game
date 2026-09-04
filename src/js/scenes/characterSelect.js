@@ -18,13 +18,23 @@ export function onEnter() {
     p2Ready = false
     controller = new AbortController()
 
+    // Reset character selections to ensure P1 starts on 0 and P2 starts on 1
+    Store.players[0].character = 0
+    Store.players[1].character = 1
+
     updateP1()
     updateP2()
 
     document.querySelector('#scene-character-select .btn-B-p1').addEventListener('click', () => {
         if(!p1Ready) {
-            if (Store.players[0].character < Store.charactersCount - 1) Store.players[0].character++
-            else Store.players[0].character = 0
+            let next = Store.players[0].character + 1
+            if (next >= Store.charactersCount) next = 0
+            // Skip P2's selected character
+            if (next === Store.players[1].character) {
+                next++
+                if (next >= Store.charactersCount) next = 0
+            }
+            Store.players[0].character = next
             playSound("assets/sounds/click.mp3")
             updateP1()
         }
@@ -32,8 +42,14 @@ export function onEnter() {
 
     document.querySelector('#scene-character-select .btn-A-p1').addEventListener('click', () => {
         if(!p1Ready) {
-            if (Store.players[0].character > 0) Store.players[0].character--
-            else Store.players[0].character = Store.charactersCount - 1
+            let prev = Store.players[0].character - 1
+            if (prev < 0) prev = Store.charactersCount - 1
+            // Skip P2's selected character
+            if (prev === Store.players[1].character) {
+                prev--
+                if (prev < 0) prev = Store.charactersCount - 1
+            }
+            Store.players[0].character = prev
             playSound("assets/sounds/click.mp3")
             updateP1()
         }
@@ -41,8 +57,14 @@ export function onEnter() {
 
     document.querySelector('#scene-character-select .btn-B-p2').addEventListener('click', () => {
         if(!p2Ready) {
-            if (Store.players[1].character < Store.charactersCount - 1) Store.players[1].character++
-            else Store.players[1].character = 0
+            let next = Store.players[1].character + 1
+            if (next >= Store.charactersCount) next = 0
+            // Skip P1's selected character
+            if (next === Store.players[0].character) {
+                next++
+                if (next >= Store.charactersCount) next = 0
+            }
+            Store.players[1].character = next
             playSound("assets/sounds/click.mp3")
             updateP2()
         }
@@ -50,8 +72,14 @@ export function onEnter() {
 
     document.querySelector('#scene-character-select .btn-A-p2').addEventListener('click', () => {
         if(!p2Ready) {
-            if (Store.players[1].character > 0) Store.players[1].character--
-            else Store.players[1].character = Store.charactersCount - 1
+            let prev = Store.players[1].character - 1
+            if (prev < 0) prev = Store.charactersCount - 1
+            // Skip P1's selected character
+            if (prev === Store.players[0].character) {
+                prev--
+                if (prev < 0) prev = Store.charactersCount - 1
+            }
+            Store.players[1].character = prev
             playSound("assets/sounds/click.mp3")
             updateP2()
         }
@@ -70,7 +98,12 @@ export function onEnter() {
         }
 
         if (p1Ready && p2Ready) {
-            EventBus.emit('scene:bet')
+            // Defensive validation: ensure both players have different characters
+            if (Store.players[0].character !== Store.players[1].character) {
+                EventBus.emit('scene:bet')
+            } else {
+                console.error('Both players cannot have the same character')
+            }
         }
     }, { signal: controller.signal })
 
@@ -87,7 +120,12 @@ export function onEnter() {
         }
 
         if (p1Ready && p2Ready) {
-            EventBus.emit('scene:bet')
+            // Defensive validation: ensure both players have different characters
+            if (Store.players[0].character !== Store.players[1].character) {
+                EventBus.emit('scene:bet')
+            } else {
+                console.error('Both players cannot have the same character')
+            }
         }
     }, { signal: controller.signal })
 }
