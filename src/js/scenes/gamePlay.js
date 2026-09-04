@@ -3,15 +3,26 @@ import Store from '../core/Store.js'
 import * as Cards from './../../../data/cards.js'
 import * as Settings from './../../../data/settings.js'
 import * as Characters from './../../../data/characters.js'
-import { generateCharacterCard, translateSkillKey, formatSeconds, playSound } from './../core/Utils.js'
+import { generateCharacterCard, translateSkillKey, formatSeconds } from './../core/Utils.js'
+import { playSound, preloadSounds } from './../core/Audio.js'
 
 // ===== animation parameters (tweak here) =====
 const ANIM = {
     cardRiseDuration: 500,      // ms - match $card-rise-duration in stylus
-    turnSwitchDelay: 1200,       // ms - fixed delay before next player's decks are reactivated
+    turnSwitchDelay: 1200,       // ms - fallback delay when audio is unavailable (locked/failed)
     previousOffsetRange: 14,    // px range for random offset of previous cards
     previousRotationRange: 8,   // deg range for random rotation of previous cards
 }
+
+// sounds used during gameplay - preloaded in onEnter so the first
+// card draw has no fetch/decode latency
+const GAMEPLAY_SOUNDS = [
+    'assets/sounds/play-positive.mp3',
+    'assets/sounds/play-ok.mp3',
+    'assets/sounds/negative.mp3',
+    'assets/sounds/countdown-tick.mp3',
+    'assets/sounds/gong.mp3',
+]
 
 let currentTurn = 0 // player 0 or 1
 let isProcessing = false // lock to prevent multiple clicks during turn switch delay
@@ -66,95 +77,19 @@ export function onEnter() {
 
     controller = new AbortController()
 
-    document.querySelector('#card-deck-1-p1').addEventListener('click', () => {
-        if(currentTurn === 0 && !isProcessing && !gameEnded) {
-            isProcessing = true
-            lockCurrentPlayer()
-            const previousScore = drawCard(Store.players[0])
-            updateSkillBars(0)
-            animateScore(pointsP1, previousScore, Store.players[0].score)
-            changeTurn()
-            setTimeout(() => {
-                updateGUI()
-                isProcessing = false
-            }, ANIM.turnSwitchDelay)
-        }
-    }, { signal: controller.signal })
+    // warm up the sound cache so the first card draw has no latency
+    preloadSounds(GAMEPLAY_SOUNDS)
 
-    document.querySelector('#card-deck-2-p1').addEventListener('click', () => {
-        if(currentTurn === 0 && !isProcessing && !gameEnded) {
-            isProcessing = true
-            lockCurrentPlayer()
-            const previousScore = drawCard(Store.players[0])
-            updateSkillBars(0)
-            animateScore(pointsP1, previousScore, Store.players[0].score)
-            changeTurn()
-            setTimeout(() => {
-                updateGUI()
-                isProcessing = false
-            }, ANIM.turnSwitchDelay)
+    // single handler for all 6 card decks - the decks reactivate when the
+    // drawn card's sound has finished playing (not on a fixed delay)
+    for (const [playerIndex, deckIds] of [[0, ['#card-deck-1-p1', '#card-deck-2-p1', '#card-deck-3-p1']],
+                                          [1, ['#card-deck-1-p2', '#card-deck-2-p2', '#card-deck-3-p2']]]) {
+        for (const deckId of deckIds) {
+            document.querySelector(deckId).addEventListener('click', () => {
+                handleDeckClick(playerIndex)
+            }, { signal: controller.signal })
         }
-    }, { signal: controller.signal })
-
-    document.querySelector('#card-deck-3-p1').addEventListener('click', () => {
-        if(currentTurn === 0 && !isProcessing && !gameEnded) {
-            isProcessing = true
-            lockCurrentPlayer()
-            const previousScore = drawCard(Store.players[0])
-            updateSkillBars(0)
-            animateScore(pointsP1, previousScore, Store.players[0].score)
-            changeTurn()
-            setTimeout(() => {
-                updateGUI()
-                isProcessing = false
-            }, ANIM.turnSwitchDelay)
-        }
-    }, { signal: controller.signal })
-
-    document.querySelector('#card-deck-1-p2').addEventListener('click', () => {
-        if(currentTurn === 1 && !isProcessing && !gameEnded) {
-            isProcessing = true
-            lockCurrentPlayer()
-            const previousScore = drawCard(Store.players[1])
-            updateSkillBars(1)
-            animateScore(pointsP2, previousScore, Store.players[1].score)
-            changeTurn()
-            setTimeout(() => {
-                updateGUI()
-                isProcessing = false
-            }, ANIM.turnSwitchDelay)
-        }
-    }, { signal: controller.signal })
-
-    document.querySelector('#card-deck-2-p2').addEventListener('click', () => {
-        if(currentTurn === 1 && !isProcessing && !gameEnded) {
-            isProcessing = true
-            lockCurrentPlayer()
-            const previousScore = drawCard(Store.players[1])
-            updateSkillBars(1)
-            animateScore(pointsP2, previousScore, Store.players[1].score)
-            changeTurn()
-            setTimeout(() => {
-                updateGUI()
-                isProcessing = false
-            }, ANIM.turnSwitchDelay)
-        }
-    }, { signal: controller.signal })
-
-    document.querySelector('#card-deck-3-p2').addEventListener('click', () => {
-        if(currentTurn === 1 && !isProcessing && !gameEnded) {
-            isProcessing = true
-            lockCurrentPlayer()
-            const previousScore = drawCard(Store.players[1])
-            updateSkillBars(1)
-            animateScore(pointsP2, previousScore, Store.players[1].score)
-            changeTurn()
-            setTimeout(() => {
-                updateGUI()
-                isProcessing = false
-            }, ANIM.turnSwitchDelay)
-        }
-    }, { signal: controller.signal })
+    }
 
     startTimer(() => {
         console.log("gameIsOver")
@@ -162,14 +97,42 @@ export function onEnter() {
     })
 }
 
+// handle a click on any of the 6 card decks.
+// the next player's decks are reactivated when the drawn card's sound has
+// finished playing; the fixed delay is only a fallback for when audio is
+// unavailable (autoplay policy or load failure).
+async function handleDeckClick(playerIndex) {
+    if (currentTurn !== playerIndex || isProcessing || gameEnded) return
+
+    isProcessing = true
+    lockCurrentPlayer()
+
+    const { previousScore, playback } = drawCard(Store.players[playerIndex])
+    updateSkillBars(playerIndex)
+    animateScore(playerIndex === 0 ? pointsP1 : pointsP2, previousScore, Store.players[playerIndex].score)
+    changeTurn()
+
+    // wait for the sound to finish (resolves false when audio is unavailable)
+    const played = await playback
+    if (!played) await new Promise(resolve => setTimeout(resolve, ANIM.turnSwitchDelay))
+
+    // once the game has ended (timer expiry during playback), never re-enable
+    if (gameEnded) return
+
+    updateGUI()
+    isProcessing = false
+}
+
 function drawCard(player) {
     const randomId = Math.floor(Math.random() * Cards.CARDS.length)
     const card = Cards.CARDS[randomId]
 
     // positive
-    if(card.type == 'positive') playSound("assets/sounds/play-positive.mp3")
-    else if(card.type == 'special') playSound("assets/sounds/play-ok.mp3")
-    else if(card.type == 'negative') playSound("assets/sounds/negative.mp3")
+    let playback
+    if(card.type == 'positive') playback = playSound("assets/sounds/play-positive.mp3")
+    else if(card.type == 'special') playback = playSound("assets/sounds/play-ok.mp3")
+    else if(card.type == 'negative') playback = playSound("assets/sounds/negative.mp3")
+    else playback = Promise.resolve(false) // unknown card type: no sound
 
     // card points label
     const pointsLabel = (card.score > 0) ? `+${card.score}` : `${card.score}`
@@ -191,7 +154,7 @@ function drawCard(player) {
             return [skill, _value]})
     )
 
-    return previousScore
+    return { previousScore, playback }
 }
 
 // Create a new .drawn-card and append it to the stack.

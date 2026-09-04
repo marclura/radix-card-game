@@ -1,7 +1,7 @@
 import EventBus from '../core/EventBus.js'
 import Store from '../core/Store.js'
 import * as Characters from '../../../data/characters.js'
-import { playSound } from './../core/Utils.js'
+import { playSound } from './../core/Audio.js'
 
 let p1Ready = false
 let p2Ready = false
