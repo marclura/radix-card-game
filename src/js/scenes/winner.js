@@ -17,6 +17,7 @@ const ANIM = {
 // central messages (editable from JS - shown at different steps of the sequence)
 const MSG_WINNER = 'Vinci il doppio delle fishes puntate!'   // shown when the winner board is in position
 const MSG_LOSER = 'Hai perso tutto!'                // shown when the loser board is in position
+const MSG_TIE = 'Pareggio!'                         // shown when both boards are in position (tie)
 const MSG_END = 'Il gioco è terminato!'  // shown with the restart buttons
 
 let p1Ready = false
@@ -186,9 +187,13 @@ export function onEnter() {
     betP2.textContent = p2.bet
 
     // ===== animation sequence =====
-    // 1. sound delay -> 2. winner board slides in (+ winner message)
+    // win/lose: 1. sound delay -> 2. winner board slides in (+ winner message)
     // -> 3. winner fiches -> 4. loser board slides in (message hidden)
     // -> 5. loser fiches (+ loser message)
+    // -> 6. end message -> 7. reveal buttons
+    //
+    // tie: 1. sound delay -> 2. both boards slide up together
+    // -> 3. single "Pareggio!" message (no fiches modification)
     // -> 6. end message -> 7. reveal buttons
     ;(async () => {
         // 1. small delay before the winner sound starts
@@ -197,13 +202,15 @@ export function onEnter() {
         playSound("assets/sounds/winner.mp3")
 
         if (winner === -1) {
-            // tie: both boards slide in (score already displayed), no fiches animation
-            for (const i of [0, 1]) {
-                // board slides in from the bottom
-                showBoard(boards[i])
-                await wait(ANIM.boardSlideDuration + ANIM.boardSlideDelay)
-                if (token !== entryToken) return
-            }
+            // tie: both boards slide up (fade in) together, no fiches modification
+            showBoard(boards[0])
+            showBoard(boards[1])
+            await wait(ANIM.boardSlideDuration + ANIM.boardSlideDelay)
+            if (token !== entryToken) return
+
+            // single central message, coins stay untouched
+            setCenterMessage([MSG_TIE])
+            showCenter()
         } else {
             const w = winner
             const l = 1 - winner
