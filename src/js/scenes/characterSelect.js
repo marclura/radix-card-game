@@ -96,14 +96,14 @@ export function onEnter() {
             })
 
             playSound("assets/sounds/select.mp3")
-        }
 
-        if (p1Ready && p2Ready) {
-            // Defensive validation: ensure both players have different characters
-            if (Store.players[0].character !== Store.players[1].character) {
-                EventBus.emit('scene:bet')
-            } else {
-                console.error('Both players cannot have the same character')
+            if (p1Ready && p2Ready) {
+                // Defensive validation: ensure both players have different characters
+                if (Store.players[0].character !== Store.players[1].character) {
+                    EventBus.emit('scene:bet')
+                } else {
+                    console.error('Both players cannot have the same character')
+                }
             }
         }
     }, { signal: controller.signal })
@@ -118,14 +118,14 @@ export function onEnter() {
             })
 
             playSound("assets/sounds/select.mp3")
-        }
 
-        if (p1Ready && p2Ready) {
-            // Defensive validation: ensure both players have different characters
-            if (Store.players[0].character !== Store.players[1].character) {
-                EventBus.emit('scene:bet')
-            } else {
-                console.error('Both players cannot have the same character')
+            if (p1Ready && p2Ready) {
+                // Defensive validation: ensure both players have different characters
+                if (Store.players[0].character !== Store.players[1].character) {
+                    EventBus.emit('scene:bet')
+                } else {
+                    console.error('Both players cannot have the same character')
+                }
             }
         }
     }, { signal: controller.signal })

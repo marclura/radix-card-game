@@ -47,6 +47,11 @@ const gameTimeBar = document.querySelector('#scene-game-play #game-time-bar')
 let timerInterval = null
 
 export function onEnter() {
+    // Clear any existing timer to prevent orphaned intervals
+    if (timerInterval) {
+        clearInterval(timerInterval)
+        timerInterval = null
+    }
 
     pointsP1.textContent = Store.players[0].score
     pointsP2.textContent = Store.players[1].score

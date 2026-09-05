@@ -20,21 +20,25 @@ export function onEnter() {
     controller = new AbortController()
 
     btnStartP1.addEventListener('click', () => {
-        p1Ready = true
-        btnStartP1.classList.add('disabled')
+        if (!p1Ready) {
+            p1Ready = true
+            btnStartP1.classList.add('disabled')
 
-        playSound("assets/sounds/select.mp3")
+            playSound("assets/sounds/select.mp3")
 
-        if (p1Ready && p2Ready) EventBus.emit('scene:characterSelect')
+            if (p1Ready && p2Ready) EventBus.emit('scene:characterSelect')
+        }
     }, { signal: controller.signal })
 
     btnStartP2.addEventListener('click', () => {
-        p2Ready = true
-        btnStartP2.classList.add('disabled')
+        if (!p2Ready) {
+            p2Ready = true
+            btnStartP2.classList.add('disabled')
 
-        playSound("assets/sounds/select.mp3")
+            playSound("assets/sounds/select.mp3")
 
-        if (p1Ready && p2Ready) EventBus.emit('scene:characterSelect')
+            if (p1Ready && p2Ready) EventBus.emit('scene:characterSelect')
+        }
     }, { signal: controller.signal })
 }
 
