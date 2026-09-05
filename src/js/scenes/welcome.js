@@ -16,6 +16,7 @@ export function onEnter() {
 
     p1Ready = false
     p2Ready = false
+    if (controller) controller.abort()
     controller = new AbortController()
 
     btnStartP1.addEventListener('click', () => {

@@ -44,6 +44,7 @@ function updateBetButtonsDisabledState() {
 export function onEnter() {
     p1Ready = false
     p2Ready = false
+    if (controller) controller.abort()
     controller = new AbortController()
 
     // set colors

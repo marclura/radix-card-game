@@ -16,6 +16,7 @@ const TRANSITION_OVERLAY_FADE_OUT_DURATION = 800  // step 6 - overlay fade out
 
 const scenes = { welcome, characterSelect, bet, gamePlay, winner }
 let currentScene = null
+let isTransitioning = false
 
 const phaseTitleOverlay = document.querySelector('#phase-title-overlay')
 const phaseTitleText = document.querySelector('#phase-title-text')
@@ -65,45 +66,51 @@ function clearTransitionClasses() {
 
 const SceneManager = {
     async goToScene(sceneName, showTitle = true) {
+        if (isTransitioning) return
+        isTransitioning = true
 
-        if (!scenes[sceneName]) {
-            console.error(`SceneManager: unknown scene "${sceneName}"`)
-            return
+        try {
+            if (!scenes[sceneName]) {
+                console.error(`SceneManager: unknown scene "${sceneName}"`)
+                return
+            }
+
+            const newScene = scenes[sceneName]
+            const title = SCENE_TITLES[sceneName]
+
+            // 1. Fade to white
+            await fadeInOverlay()
+
+            // 2. Text drops down (only when a title should be shown)
+            if (title && showTitle) {
+                phaseTitleText.textContent = title
+                await dropTextIn()
+            }
+
+            // 3. Let the player read the text
+            await wait(TRANSITION_TEXT_READ_DURATION)
+
+            // 4. Hard scene swap + onEnter while the overlay is still active
+            if (currentScene) {
+                currentScene.onExit()
+                currentScene.el.classList.remove('is-active')
+            }
+            currentScene = newScene
+            currentScene.el.classList.add('is-active')
+            currentScene.onEnter()
+
+            // 5. Text leaves with its animation
+            if (title && showTitle) {
+                await leaveTextOut()
+            }
+
+            // 6. Overlay fades out revealing the new scene
+            await fadeOutOverlay()
+            clearTransitionClasses()
+            phaseTitleText.textContent = ''
+        } finally {
+            isTransitioning = false
         }
-
-        const newScene = scenes[sceneName]
-        const title = SCENE_TITLES[sceneName]
-
-        // 1. Fade to white
-        await fadeInOverlay()
-
-        // 2. Text drops down (only when a title should be shown)
-        if (title && showTitle) {
-            phaseTitleText.textContent = title
-            await dropTextIn()
-        }
-
-        // 3. Let the player read the text
-        await wait(TRANSITION_TEXT_READ_DURATION)
-
-        // 4. Hard scene swap + onEnter while the overlay is still active
-        if (currentScene) {
-            currentScene.onExit()
-            currentScene.el.classList.remove('is-active')
-        }
-        currentScene = newScene
-        currentScene.el.classList.add('is-active')
-        currentScene.onEnter()
-
-        // 5. Text leaves with its animation
-        if (title && showTitle) {
-            await leaveTextOut()
-        }
-
-        // 6. Overlay fades out revealing the new scene
-        await fadeOutOverlay()
-        clearTransitionClasses()
-        phaseTitleText.textContent = ''
     }
 }
 

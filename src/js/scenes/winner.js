@@ -131,9 +131,43 @@ function revealButtons() {
     btnRestartP2.classList.remove('is-hidden')
 }
 
+// immediately snap the scene to its final visual state.
+// used when the animation sequence stalls (e.g. tab hidden, rAF paused).
+function snapToEndState() {
+    // Cancel all pending animations
+    pendingTimeouts.forEach(clearTimeout)
+    pendingTimeouts = []
+    pendingFrames.forEach(cancelAnimationFrame)
+    pendingFrames = []
+
+    // Show both boards
+    boards.forEach(board => board.classList.remove('is-offscreen'))
+
+    // Set final bet values
+    const p1 = Store.players[0]
+    const p2 = Store.players[1]
+    let winner = -1
+    if (p1.score > p2.score) winner = 0
+    else if (p2.score > p1.score) winner = 1
+
+    if (winner === -1) {
+        betP1.textContent = p1.bet
+        betP2.textContent = p2.bet
+    } else {
+        bets[winner].textContent = Store.players[winner].bet * 2
+        bets[1 - winner].textContent = 0
+    }
+
+    // Show end message and reveal buttons
+    setCenterMessage([MSG_END])
+    showCenter()
+    revealButtons()
+}
+
 export function onEnter() {
     p1Ready = false
     p2Ready = false
+    if (controller) controller.abort()
     controller = new AbortController()
 
     // invalidate any callbacks from a previous entry and reset the pending lists
@@ -262,6 +296,16 @@ export function onEnter() {
         revealButtons()
     })()
 
+    // Safety net: if the animation sequence stalls for any reason,
+    // reveal the buttons after a generous maximum delay
+    const SAFETY_NET_DELAY = 15000  // 15 seconds (generous buffer over the ~10s sequence)
+    const safetyTimeout = setTimeout(() => {
+        if (token === entryToken && btnRestartP1.classList.contains('is-hidden')) {
+            snapToEndState()
+        }
+    }, SAFETY_NET_DELAY)
+    pendingTimeouts.push(safetyTimeout)
+
     btnRestartP1.addEventListener('click', () => {
         p1Ready = true
         btnRestartP1.classList.add('disabled')
@@ -276,6 +320,16 @@ export function onEnter() {
         playSound("assets/sounds/select.mp3")
 
         if (p1Ready && p2Ready) EventBus.emit('scene:welcome')
+    }, { signal: controller.signal })
+
+    // Snap to end state when the user returns to a hidden tab
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            // If buttons are still hidden, the animation was stalled
+            if (btnRestartP1.classList.contains('is-hidden')) {
+                snapToEndState()
+            }
+        }
     }, { signal: controller.signal })
 }
 

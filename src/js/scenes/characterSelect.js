@@ -16,6 +16,7 @@ export const el = document.querySelector('#scene-character-select')
 export function onEnter() {
     p1Ready = false
     p2Ready = false
+    if (controller) controller.abort()
     controller = new AbortController()
 
     // Reset character selections to ensure P1 starts on 0 and P2 starts on 1

@@ -75,6 +75,7 @@ export function onEnter() {
     const starterName = Characters.CHARACTERS[Store.players[currentTurn].character].name
     addDrawnCard(`Inizia ${starterName}`, null)
 
+    if (controller) controller.abort()
     controller = new AbortController()
 
     // warm up the sound cache so the first card draw has no latency
